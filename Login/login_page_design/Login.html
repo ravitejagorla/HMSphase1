@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>H.M.S</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-LN+7fdVzj6u52u30Kp6M/trliBMCMKTyK833zpbD+pXdCLuTusPj697FH4R/5mcr" crossorigin="anonymous"> 
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet"> 
+    <link rel="stylesheet" href="login.css">
+</head>
+
+<body>
+    <div class="row">
+        <div class="container-fluid min-vh-100 d-flex justify-content-center align-items-center">
+            <div class="card p-4" style="max-width: 400px; width: 100%;">
+                  <!-- Logo -->
+                    <div class="text-center mb-3">
+                        <img src="rvm.png" class="mb-2" style="max-width: 110px;" alt="Logo">
+                        <h5 style="color: rgb(48, 72, 156);">Welcome To RVM Master Panel!</h5>
+                        <p class="text-center small text-secondary">Sign in to continue to RVM ERP.</p>
+                    </div>
+                    <!-- Login Form -->
+                    <form>
+                        <div class="mb-3">
+                        <label for="email" class="form-label ">Email/CRN <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" id="email" placeholder="Enter Email/CRN">
+                        </div>
+                        <div class="mb-3">
+                        <label for="password" class="form-label ">Password <span class="text-danger">*</span></label>
+                        <div class="input-group">
+                        <input type="password" class="form-control" id="password" placeholder="Enter password">
+                        <!-- Eye button -->
+                        <button class="btn btn-white" type="button" id="togglePassword">
+                            <i class="bi bi-eye"></i>
+                        </button>
+                        </div>
+                        </div>
+                        <div class="mb-3 form-check">
+                        <input type="checkbox" class="form-check-input" id="remember">
+                        <label class="form-check-label " for="remember">Remember me</label>
+                        </div>
+                        <!-- <button  type="submit" class="btn btn-success w-100 "><a href="dashboard.html"></a>Sign in</button> -->
+                         <a href="dashboard.html" class="btn btn-success w-100">Sign in</a>
+                    </form>
+            </div>
+        </div>
+    </div>
+    <!-- Footer -->
+    <div class="text-center mt-3">
+      <small class="text-muted">© 2025 RVM HSM Design & Developed By Paramsons Software</small>
+    </div>
+<script>
+    const togglePassword = document.getElementById("togglePassword");
+    const password = document.getElementById("password");
+
+    togglePassword.addEventListener("click", function () {
+        // Toggle input type
+        const type = password.getAttribute("type") === "password" ? "text" : "password";
+        password.setAttribute("type", type);
+
+        // Toggle icon
+        this.querySelector("i").classList.toggle("bi-eye");
+        this.querySelector("i").classList.toggle("bi-eye-slash");
+    });
+</script>
+
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
+                    integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
+                    crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
+                    integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
+                    crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.min.js"
+                    integrity="sha384-G/EV+4j2dNv+tEPo3++6LCgdCROaejBqfUeNjuKAiuXbjrxilcCdDz6ZAVfHWe1Y"
+                    crossorigin="anonymous"></script>
+</body>
+
+</html>
