@@ -122,6 +122,7 @@
       border-radius: 5px;
     }
 
+
     .header .search-bar .form-control {
       border: none;
       box-shadow: none;
@@ -232,30 +233,52 @@
 
     <div class="main-content">
       <header class="header d-flex justify-content-between align-items-center">
-        <div class="d-flex align-items-center">
-          <form class="d-flex me-3">
-            <input class="form-control me-2" type="search" placeholder="Search..." aria-label="Search">
-            <button class="btn btn-primary" type="submit"><i class="fas fa-search"></i></button>
-          </form>
-        </div>
-        <div class="d-flex align-items-center">
-          <div class="header-icons me-3">
-            <i class="fas fa-bell"></i>
-            <i class="fas fa-expand"></i>
-            <i class="fas fa-user-circle"></i>
-          </div>
-          <div class="user-info d-flex align-items-center">
-            <div class="user-avatar text-white bg-info rounded-circle d-flex align-items-center justify-content-center">
-              lv</div>
-            <div>
-              <div class="fw-bold">lvktch</div>
-              <div class="small text-muted">Master Panel</div>
-            </div>
-            <hr>
-          </div>
-        </div>
-      </header>
+  <div class="d-flex align-items-center">
+    <form class="d-flex me-3">
+      <input class="form-control me-2" type="search" placeholder="Search..." aria-label="Search">
+      <button class="btn btn-primary" type="submit"><i class="fas fa-search"></i></button>
+    </form>
+  </div>
+  <div class="d-flex align-items-center">
+    <div class="header-icons me-3">
+      <i class="fas fa-bell"></i>
+      <i class="fas fa-expand"></i>
+      <i class="fas fa-user-circle"></i>
+    </div>
+    <div class="user-info d-flex align-items-center">
+      <div class="user-avatar text-white bg-info rounded-circle d-flex align-items-center justify-content-center">
+        lv
+      </div>
+      <div>
+        <div class="fw-bold">lvktch</div>
+        <div class="small text-muted">Master Panel</div>
+      </div>
+    </div>
+  </div>
+</header>
 
+<style>
+  .header {
+    position: fixed;
+    top: 0;
+    left: 115;
+    width: 82%;
+    height: 70px; /* adjust based on your header height */
+    background: #fff; /* keeps it solid */
+    border-bottom: 1px solid #ddd;
+    padding: 0 20px;
+    z-index: 1000; /* keeps it above other content */
+  }
+
+  .content {
+    margin-top: 70px; /* same as header height */
+    padding: 20px;
+  }
+</style>
+
+<br>
+<br>
+<br>
       <div class="container">
         <div class="row">
           <div class="col-md-12">
@@ -702,7 +725,7 @@
 
                       <td>RD</td>
 
-                      <td><span class="badge text-bg-danger">In-Active</span></td>
+                      <td><span class="badge text-bg-danger">deactive</span></td>
 
                       <td>25-04-25,08:00 PM</td>
 
@@ -742,7 +765,7 @@
                                   </tr>
                                   <tr>
                                     <th>Status</th>
-                                    <td><span class="badge text-bg-danger">In-Active</span></td>
+                                    <td><span class="badge text-bg-danger">deactive</span></td>
                                   </tr>
                                   <tr>
                                     <th>Created Date</th>
@@ -1153,7 +1176,7 @@
                       <td>6</td>
                       <td>Physical Therapy</td>
                       <td>DR</td>
-                      <td><span class="badge text-bg-danger">In-Active</span></td>
+                      <td><span class="badge text-bg-danger">deactive</span></td>
                       <td>28-06-25,12:30 PM</td>
                       <td>
                         <div class="btn btn-xm" style="background-color: rgb(48, 72, 156);" data-bs-toggle="modal"
@@ -1188,7 +1211,7 @@
                                   </tr>
                                   <tr>
                                     <th>Status</th>
-                                    <td><span class="badge text-bg-danger">In-Active</span></td>
+                                    <td><span class="badge text-bg-danger">deactive</span></td>
                                   </tr>
                                   <tr>
                                     <th>Created Date</th>
