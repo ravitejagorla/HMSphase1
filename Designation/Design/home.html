@@ -255,7 +255,7 @@
           Management</a>
 
         <div class="menu-category">Settings</div>
-        <a href="#" class="list-group-item list-group-item-action active"><i class="fas fa-cog"></i> General
+        <a href="#" class="list-group-item list-group-item-action"><i class="fas fa-cog"></i> General
           Settings</a>
 
       </div>
@@ -265,13 +265,13 @@
       <header class="header d-flex justify-content-between align-items-center">
         <div class="d-flex align-items-center">
           <form class="d-flex me-3">
-             <button class="btn btn-light me-2" type="submit"><i class="fas fa-bars"></i></button>
+            <button class="btn btn-light me-2" type="submit"><i class="fas fa-bars"></i></button>
             <input class="form-control me-2" type="search" placeholder="Search..." aria-label="Search">
           </form>
         </div>
         <div class="d-flex align-items-center">
           <div class="header-icons me-3">
-              <i class="fas fa-bed"></i>
+            <i class="fas fa-bed"></i>
             <i class="fas fa-expand"></i>
             <i class="fas fa-moon"></i>
             <i class="fas fa-bell"></i>
@@ -282,12 +282,28 @@
             </div>
             <div>
               <div class="fw-bold dropdown">
-                <a  role="button" data-bs-toggle="dropdown" aria-expanded="false" style="color: black;">
+                <a role="button" data-bs-toggle="dropdown" aria-expanded="false" style="color: black;">
                   lvktch
                 </a>
                 <ul class="dropdown-menu">
-                  <li><a class="dropdown-item" href="login.html">Logout</a></li>
+                  <li>
+                    <a class="dropdown-item" href="login.html"
+                      style="text-decoration: none !important; border-bottom: none !important;">
+                      Logout
+                    </a>
+                  </li>
                 </ul>
+                <style>
+                  a,
+                  a:hover,
+                  a:focus,
+                  a:active,
+                  a:visited {
+                    text-decoration: none !important;
+                    outline: none !important;
+                    box-shadow: none !important;
+                  }
+                </style>
 
               </div>
               <div class="small text-muted">Master Panel</div>
@@ -295,24 +311,28 @@
           </div>
         </div>
 
-    
-       <footer>
-            <div class="text-secondary small p-2 d-flex justify-content-between align-items-center">
-              <p class="mb-0">R.V.M Hospitals © Peramson Software.All Rights Reserved.</p>
-              <p class="mb-0">Design & develop by Peramsons Software</p>
-            </div>
-    </footer>  
-    <style>
-      footer {
-  background-color: white;
-  z-index: 1040;
-  width: 83.6%;          
-  position: fixed;      
-  bottom: 0;            
-  left: 28.1ch;
-}
-    </style>
-      <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+        <!-- Write here -->
+
+
+
+
+        <footer>
+          <div class="text-secondary small p-2 d-flex justify-content-between align-items-center">
+            <p class="mb-0">R.V.M Hospitals © Peramson Software.All Rights Reserved.</p>
+            <p class="mb-0">Design & develop by Peramsons Software</p>
+          </div>
+        </footer>
+        <style>
+          footer {
+            background-color: white;
+            z-index: 1040;
+            width: 83.6%;
+            position: fixed;
+            bottom: 0;
+            left: 28.1ch;
+          }
+        </style>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 
 </body>
 
