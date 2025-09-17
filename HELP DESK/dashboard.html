@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Dashboard - Service Desk</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"/>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+  <style>
+    body, html {
+      height: 100%;
+      margin: 0;
+      font-family: Arial, sans-serif;
+      overflow-x: hidden;
+    }
+    .sidebar {
+      height: 100%;
+      width: 220px;
+      position: fixed;
+      top: 0;
+      left: 0;
+      background-color: #0a2c6d;
+      padding-top: 20px;
+      color: white;
+    }
+    .sidebar a {
+      padding: 12px 20px;
+      text-decoration: none;
+      color: white;
+      display: block;
+    }
+    .sidebar a:hover, .sidebar a.active {
+      background-color: #0a2c6d;
+    }
+    .content {
+      margin-left: 220px;
+      padding: 20px;
+      min-height: 100vh;
+      background-color: #f8f9fa;
+    }
+    .header {
+      background-color: #fff;
+      border-bottom: 1px solid #ddd;
+      padding: 10px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .search-input {
+      width: 300px;
+      padding: 6px 10px;
+      border: 1px solid #ced4da;
+      border-radius: 5px;
+      background-color: #f1f1f1;
+    }
+    .icon-buttons i {
+      font-size: 1.2rem;
+      margin-right: 15px;
+      cursor: pointer;
+    }
+    .profile-info {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .profile-info img {
+      height: 32px;
+      width: 32px;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+    .footer {
+      background-color: #f8f9fa;
+      text-align: center;
+      padding: 10px;
+      font-size: 12px; 
+      position: fixed;
+      bottom: 0;
+      left: 220px;
+      width: calc(100% - 220px);
+    }
+    .page-title {
+      margin-top: 20px;
+      margin-bottom: 20px;
+    }
+    .boxes .box {
+      background-color: white;
+      border: 1px solid #ddd;
+      padding: 20px;
+      text-align: center;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+    .boxes .box:hover {
+      background-color: #e9ecef;
+    }
+    .table-header-darkblue th {
+      background-color: #0a2c6d !important;
+      color: white !important;
+    }
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: 1050;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.5);
+      align-items: center;
+      justify-content: center;
+    }
+    .modal-dialog {
+      max-width: 800px;
+    }
+    .modal-header {
+      background-color: #0a2c6d;
+      color: white;
+    }
+    .modal-footer {
+      justify-content: center;
+    }
+    .modal-footer .btn {
+      background-color: #0a2c6d;
+      border-color: #0a2c6d;
+      color: white;
+    }
+    .modal-footer .btn:hover {
+      background-color: #0a2c6d;
+      border-color: #0a2c6d;
+      color: white;
+    }
+    .record-row {
+      background-color: #0a2c6d;
+      color: white;
+    }
+    .pagination {
+      justify-content: center;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Sidebar -->
+  <div class="sidebar">
+    <h4 class="text-center">RVM</h4>
+    <a href="#" id="dashboardLink" class="active" onclick="showPage('dashboard')">Dashboard</a>
+    <a href="#" id="helpDeskLink" onclick="showPage('helpdesk')">Help Desk</a>
+    <a href="#" id="generalSettingLink" onclick="showPage('generalSetting')">General Setting</a>
+  </div>
+
+  <!-- Main Content -->
+  <div class="content">
+    <div class="header">
+      <div><input type="text" class="search-input" placeholder="Search..." /></div>
+      <div class="d-flex align-items-center gap-4">
+        <div class="icon-buttons">
+          <i class="bi bi-hospital"></i>
+          <i class="bi bi-arrows-fullscreen"></i>
+          <i class="bi bi-moon"></i>
+          <i class="bi bi-bell-fill text-danger"></i>
+        </div>
+        <div class="profile-info">
+          <img src="C:\Users\Dell\Desktop\HMS PROJECT\HELP DESK\rama.jpg" alt="Profile">
+          <div>
+            <div><strong>R.V.M Hospitals</strong></div>
+            <small>RVM15032501</small>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <h3 id="pageTitle" class="page-title">Dashboard</h3>
+
+    <!-- Dashboard Page: Now only header -->
+    <div id="dashboardPage">
+      <!-- Empty: Only header will be visible -->
+    </div>
+
+    <!-- Help Desk Page -->
+    <div id="helpdeskPage" style="display: none;">
+      <div class="mb-3">
+        <button class="btn btn-primary" style="background-color: #0a2c6d;" onclick="showVisitorInfo()">Visitor Information</button>
+      </div>
+      <div class="d-flex justify-content-between mb-3">
+        <div>
+          <button class="btn btn-primary" style="background-color: #0a2c6d;" onclick="showAddModal()">Create Visitor</button>
+          <button class="btn btn-secondary" onclick="importCSV()">Import</button>
+          <button class="btn btn-secondary" onclick="exportCSV()">Export</button>
+          <input type="file" id="importFile" accept=".csv" style="display:none" onchange="handleImport(event)" />
+        </div>
+      </div>
+      <div class="table-container">
+        <table class="table table-bordered bg-white">
+          <thead class="table-header-darkblue">
+            <tr>
+              <th>S. No.</th>
+              <th>Purpose</th>
+              <th>Status</th>
+              <th>Date & Time</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="recordsTableBody"></tbody>
+        </table>
+      </div>
+      <nav>
+        <ul class="pagination" id="pagination"></ul>
+      </nav>
+    </div>
+
+    <!-- General Setting Page -->
+    <div id="generalSettingPage" style="display: none;">
+      <div class="jumbotron bg-light p-4 rounded shadow-sm">
+        <h5>General Setting</h5>
+        <div class="boxes row g-3 mt-3">
+          <div class="col-md-3"><div class="box" onclick="showPage('helpdesk')">Purpose of Visit</div></div>
+          <div class="col-md-3"><div class="box">Parcel</div></div>
+          <div class="col-md-3"><div class="box">Complaint</div></div>
+          <div class="col-md-3"><div class="box">Grievance</div></div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="footer">
+    © 2025 RVM Hospitals - All rights reserved
+  </div>
+
+  <!-- Add Modal (Unchanged) -->
+  <div class="modal" id="addModal">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5>Create Visitor</h5>
+          <button type="button" class="btn-close btn-close-white" onclick="hideAddModal()"></button>
+        </div>
+        <div class="modal-body">
+          <div class="row g-3">
+            <div class="col-md-6">
+              <label for="modalPurpose" class="form-label">Purpose of Visit <span style="color:red">*</span></label>
+              <input type="text" id="modalPurpose" class="form-control" placeholder="Enter purpose">
+            </div>
+            <div class="col-md-6">
+              <label for="modalName" class="form-label">Visitor Name <span style="color:red">*</span></label>
+              <input type="text" id="modalName" class="form-control" placeholder="Enter name">
+            </div>
+            <div class="col-md-6">
+              <label for="modalPhone" class="form-label">Phone Number <span style="color:red">*</span></label>
+              <input type="text" id="modalPhone" class="form-control" placeholder="Enter phone number">
+            </div>
+            <div class="col-md-6">
+              <label for="modalIdNumber" class="form-label">Visitor ID Number <span style="color:red">*</span></label>
+              <input type="text" id="modalIdNumber" class="form-control" placeholder="Enter ID number">
+            </div>
+            <div class="col-md-6">
+              <label for="modalIdAttachment" class="form-label">Visitor ID Attachment <span style="color:red">*</span></label>
+              <input type="file" id="modalIdAttachment" class="form-control">
+            </div>
+            <div class="col-md-6">
+              <label for="modalVisitorCount" class="form-label">Number of Visitors <span style="color:red">*</span></label>
+              <input type="number" id="modalVisitorCount" class="form-control" placeholder="Enter count">
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button class="btn" onclick="hideAddModal()">Close</button>
+          <button class="btn" onclick="saveVisitor()">Save</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    let records = [];
+    let currentSerial = 1;
+    let lastVisitor = null;
+    let currentPage = 1;
+    const recordsPerPage = 5;
+
+    window.onload = () => {
+      loadFromLocalStorage();
+      updateTable();
+    };
+
+    function saveToLocalStorage() {
+      localStorage.setItem('visitorRecords', JSON.stringify(records));
+      localStorage.setItem('visitorSerial', currentSerial);
+    }
+
+    function loadFromLocalStorage() {
+      const storedRecords = JSON.parse(localStorage.getItem('visitorRecords'));
+      const storedSerial = parseInt(localStorage.getItem('visitorSerial'), 10);
+      if (storedRecords && Array.isArray(storedRecords)) {
+        records = storedRecords;
+        currentSerial = isNaN(storedSerial) ? records.length + 1 : storedSerial;
+      }
+    }
+
+    function showPage(page) {
+      document.getElementById('dashboardPage').style.display = page === 'dashboard' ? 'block' : 'none';
+      document.getElementById('helpdeskPage').style.display = page === 'helpdesk' ? 'block' : 'none';
+      document.getElementById('generalSettingPage').style.display = page === 'generalSetting' ? 'block' : 'none';
+
+      document.getElementById('pageTitle').textContent = page === 'dashboard' ? 'Dashboard' : page === 'helpdesk' ? 'Help Desk' : 'General Setting';
+
+      document.getElementById('dashboardLink').classList.toggle('active', page === 'dashboard');
+      document.getElementById('helpDeskLink').classList.toggle('active', page === 'helpdesk');
+      document.getElementById('generalSettingLink').classList.toggle('active', page === 'generalSetting');
+    }
+
+    function showAddModal() {
+      clearModalFields();
+      document.getElementById('addModal').style.display = 'flex';
+    }
+
+    function hideAddModal() {
+      document.getElementById('addModal').style.display = 'none';
+    }
+
+    function clearModalFields() {
+      document.getElementById('modalPurpose').value = "";
+      document.getElementById('modalName').value = "";
+      document.getElementById('modalPhone').value = "";
+      document.getElementById('modalIdNumber').value = "";
+      document.getElementById('modalIdAttachment').value = "";
+      document.getElementById('modalVisitorCount').value = "";
+    }
+
+    function saveVisitor() {
+      const purpose = document.getElementById('modalPurpose').value.trim();
+      const name = document.getElementById('modalName').value.trim();
+      const phone = document.getElementById('modalPhone').value.trim();
+      const idNumber = document.getElementById('modalIdNumber').value.trim();
+      const idAttachment = document.getElementById('modalIdAttachment').files[0]?.name || "No file chosen";
+      const visitorCount = document.getElementById('modalVisitorCount').value.trim();
+
+      if (!purpose || !name || !phone || !idNumber || !visitorCount) {
+        alert("Please fill all fields!");
+        return;
+      }
+
+      const record = {
+        serial: currentSerial++,
+        purpose,
+        name,
+        phone,
+        idNumber,
+        idAttachment,
+        visitorCount,
+        dateTime: new Date().toLocaleString(),
+        status: 'Active'
+      };
+
+      records.push(record);
+      lastVisitor = record;
+      saveToLocalStorage();
+      updateTable();
+      hideAddModal();
+    }
+
+    function updateTable() {
+      const tbody = document.getElementById('recordsTableBody');
+      tbody.innerHTML = "";
+      const start = (currentPage - 1) * recordsPerPage;
+      const paginatedRecords = records.slice(start, start + recordsPerPage);
+
+      paginatedRecords.forEach((record, index) => {
+        const tr = document.createElement('tr');
+        if (record === lastVisitor) {
+          tr.classList.add('record-row');
+        }
+
+        const statusClass = record.status === 'Active' ? 'btn-success' : 'btn-danger';
+
+        tr.innerHTML = `
+          <td>${record.serial}</td>
+          <td>${record.purpose}</td>
+          <td><button class="btn btn-sm ${statusClass}" onclick="toggleStatus(${record.serial})">${record.status}</button></td>
+          <td>${record.dateTime}</td>
+          <td>
+            <button class="btn btn-sm btn-info" onclick="viewRecord(${record.serial})"><i class="bi bi-eye"></i></button>
+            <button class="btn btn-sm btn-warning" onclick="editRecord(${record.serial})"><i class="bi bi-pencil"></i></button>
+            <button class="btn btn-sm btn-danger" onclick="deleteRecord(${record.serial})"><i class="bi bi-trash"></i></button>
+          </td>
+        `;
+        tbody.appendChild(tr);
+      });
+
+      renderPagination();
+    }
+
+    function renderPagination() {
+      const pagination = document.getElementById('pagination');
+      pagination.innerHTML = "";
+      const totalPages = Math.ceil(records.length / recordsPerPage);
+
+      for (let i = 1; i <= totalPages; i++) {
+        const li = document.createElement('li');
+        li.className = "page-item" + (i === currentPage ? " active" : "");
+        li.innerHTML = `<a class="page-link" href="#" onclick="goToPage(${i})">${i}</a>`;
+        pagination.appendChild(li);
+      }
+    }
+
+    function goToPage(page) {
+      currentPage = page;
+      updateTable();
+    }
+
+    function viewRecord(serial) {
+      const record = records.find(r => r.serial === serial);
+      if (!record) return;
+      alert(
+        `Purpose: ${record.purpose}\n` +
+        `Name: ${record.name}\n` +
+        `Phone: ${record.phone}\n` +
+        `ID Number: ${record.idNumber}\n` +
+        `ID Attachment: ${record.idAttachment}\n` +
+        `No. of Visitors: ${record.visitorCount}\n` +
+        `Status: ${record.status}\n` +
+        `Date & Time: ${record.dateTime}`
+      );
+    }
+
+    function editRecord(serial) {
+      const record = records.find(r => r.serial === serial);
+      if (!record) return;
+      document.getElementById('modalPurpose').value = record.purpose;
+      document.getElementById('modalName').value = record.name;
+      document.getElementById('modalPhone').value = record.phone;
+      document.getElementById('modalIdNumber').value = record.idNumber;
+      document.getElementById('modalVisitorCount').value = record.visitorCount;
+      lastVisitor = record;
+      showAddModal();
+    }
+
+    function deleteRecord(serial) {
+      if (confirm("Are you sure you want to delete this record?")) {
+        records = records.filter(r => r.serial !== serial);
+        if (lastVisitor && lastVisitor.serial === serial) {
+          lastVisitor = null;
+        }
+        saveToLocalStorage();
+        updateTable();
+      }
+    }
+
+    function toggleStatus(serial) {
+      const record = records.find(r => r.serial === serial);
+      if (record) {
+        record.status = record.status === 'Active' ? 'Inactive' : 'Active';
+        saveToLocalStorage();
+        updateTable();
+      }
+    }
+
+    function showVisitorInfo() {
+      if (!lastVisitor) {
+        alert("No visitor information available.");
+      } else {
+        alert(
+          `Purpose: ${lastVisitor.purpose}\n` +
+          `Name: ${lastVisitor.name}\n` +
+          `Phone: ${lastVisitor.phone}\n` +
+          `ID Number: ${lastVisitor.idNumber}\n` +
+          `ID Attachment: ${lastVisitor.idAttachment}\n` +
+          `No. of Visitors: ${lastVisitor.visitorCount}\n` +
+          `Status: ${lastVisitor.status}\n` +
+          `Date & Time: ${lastVisitor.dateTime}`
+        );
+      }
+    }
+
+    function importCSV() {
+      document.getElementById('importFile').click();
+    }
+
+    function handleImport(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        const text = e.target.result;
+        parseCSV(text);
+      };
+      reader.readAsText(file);
+    }
+
+    function parseCSV(text) {
+      const lines = text.trim().split("\n");
+      const headers = lines[0].split(",");
+      for (let i = 1; i < lines.length; i++) {
+        const data = lines[i].split(",");
+        const record = {
+          serial: currentSerial++,
+          purpose: data[0].replace(/"/g, ""),
+          name: data[1].replace(/"/g, ""),
+          phone: data[2].replace(/"/g, ""),
+          idNumber: data[3].replace(/"/g, ""),
+          idAttachment: data[4].replace(/"/g, ""),
+          visitorCount: data[5].replace(/"/g, ""),
+          dateTime: data[6].replace(/"/g, ""),
+          status: data[7].replace(/"/g, "")
+        };
+        records.push(record);
+      }
+      saveToLocalStorage();
+      updateTable();
+    }
+
+    function exportCSV() {
+      let csv = "Purpose,Name,Phone,ID Number,ID Attachment,No. of Visitors,Date & Time,Status\n";
+      records.forEach(record => {
+        csv += [
+          record.purpose,
+          record.name,
+          record.phone,
+          record.idNumber,
+          record.idAttachment,
+          record.visitorCount,
+          record.dateTime,
+          record.status
+        ].map(v => `"${v}"`).join(",") + "\n";
+      });
+      const blob = new Blob([csv], { type: 'text/csv' });
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = 'visitors.csv';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+    }
+
+    window.onclick = function(event) {
+      const addModal = document.getElementById('addModal');
+      if (event.target === addModal) {
+        hideAddModal();
+      }
+    };
+  </script>
+
+</body>
+</html>
