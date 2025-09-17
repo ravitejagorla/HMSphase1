@@ -59,15 +59,41 @@
       cursor: pointer;
     }
     .profile-info {
+      position: relative;
       display: flex;
       align-items: center;
       gap: 10px;
+      cursor: pointer;
     }
     .profile-info img {
       height: 32px;
       width: 32px;
       border-radius: 50%;
       object-fit: cover;
+    }
+    .dropdown-menu {
+      position: absolute;
+      top: 50px;
+      right: 0;
+      background-color: white;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      min-width: 70px;
+      max-height: 50px;
+      display: none;
+      z-index: 1000;
+    }
+    .dropdown-menu.show {
+      display: block;
+    }
+    .dropdown-menu a {
+      padding: 10px;
+      text-decoration: none;
+      color: #333;
+      display: block;
+    }
+    .dropdown-menu a:hover {
+      background-color: #f1f1f1;
     }
     .footer {
       background-color: #f8f9fa;
@@ -78,10 +104,6 @@
       bottom: 0;
       left: 220px;
       width: calc(100% - 220px);
-    }
-    .page-title {
-      margin-top: 20px;
-      margin-bottom: 20px;
     }
     .boxes .box {
       background-color: white;
@@ -160,21 +182,22 @@
           <i class="bi bi-moon"></i>
           <i class="bi bi-bell-fill text-danger"></i>
         </div>
-        <div class="profile-info">
-          <img src="C:\Users\Dell\Desktop\HMS PROJECT\HELP DESK\rama.jpg" alt="Profile">
+        <div class="profile-info" onclick="toggleDropdown()">
+          <img src="C:\Users\Dell\Desktop\GitHub\HMSphase1\HELP DESK\background2.jpg" alt="Profile">
           <div>
             <div><strong>R.V.M Hospitals</strong></div>
             <small>RVM15032501</small>
+          </div>
+          <div class="dropdown-menu" id="profileDropdown">
+            <a href="#" onclick="logout()">Logout</a>
           </div>
         </div>
       </div>
     </div>
 
-    <h3 id="pageTitle" class="page-title">Dashboard</h3>
-
-    <!-- Dashboard Page: Now only header -->
+    <!-- Dashboard Page -->
     <div id="dashboardPage">
-      <!-- Empty: Only header will be visible -->
+      <!-- Empty content for dashboard -->
     </div>
 
     <!-- Help Desk Page -->
@@ -228,7 +251,7 @@
     © 2025 RVM Hospitals - All rights reserved
   </div>
 
-  <!-- Add Modal (Unchanged) -->
+  <!-- Add Modal -->
   <div class="modal" id="addModal">
     <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content">
@@ -302,8 +325,6 @@
       document.getElementById('dashboardPage').style.display = page === 'dashboard' ? 'block' : 'none';
       document.getElementById('helpdeskPage').style.display = page === 'helpdesk' ? 'block' : 'none';
       document.getElementById('generalSettingPage').style.display = page === 'generalSetting' ? 'block' : 'none';
-
-      document.getElementById('pageTitle').textContent = page === 'dashboard' ? 'Dashboard' : page === 'helpdesk' ? 'Help Desk' : 'General Setting';
 
       document.getElementById('dashboardLink').classList.toggle('active', page === 'dashboard');
       document.getElementById('helpDeskLink').classList.toggle('active', page === 'helpdesk');
@@ -483,62 +504,60 @@
       const reader = new FileReader();
       reader.onload = function(e) {
         const text = e.target.result;
-        parseCSV(text);
+        const lines = text.split("\n").filter(line => line.trim());
+        lines.forEach(line => {
+          const [purpose, name, phone, idNumber, idAttachment, visitorCount, dateTime, status] = line.split(",");
+          records.push({
+            serial: currentSerial++,
+            purpose: purpose || "",
+            name: name || "",
+            phone: phone || "",
+            idNumber: idNumber || "",
+            idAttachment: idAttachment || "No file chosen",
+            visitorCount: visitorCount || "1",
+            dateTime: dateTime || new Date().toLocaleString(),
+            status: status || "Active"
+          });
+        });
+        saveToLocalStorage();
+        updateTable();
       };
       reader.readAsText(file);
     }
 
-    function parseCSV(text) {
-      const lines = text.trim().split("\n");
-      const headers = lines[0].split(",");
-      for (let i = 1; i < lines.length; i++) {
-        const data = lines[i].split(",");
-        const record = {
-          serial: currentSerial++,
-          purpose: data[0].replace(/"/g, ""),
-          name: data[1].replace(/"/g, ""),
-          phone: data[2].replace(/"/g, ""),
-          idNumber: data[3].replace(/"/g, ""),
-          idAttachment: data[4].replace(/"/g, ""),
-          visitorCount: data[5].replace(/"/g, ""),
-          dateTime: data[6].replace(/"/g, ""),
-          status: data[7].replace(/"/g, "")
-        };
-        records.push(record);
-      }
-      saveToLocalStorage();
-      updateTable();
+    function exportCSV() {
+      let csvContent = "Purpose,Name,Phone,ID Number,ID Attachment,Visitor Count,Date & Time,Status\n";
+      records.forEach(record => {
+        csvContent += `${record.purpose},${record.name},${record.phone},${record.idNumber},${record.idAttachment},${record.visitorCount},${record.dateTime},${record.status}\n`;
+      });
+      const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+      const link = document.createElement("a");
+      link.href = URL.createObjectURL(blob);
+      link.download = "visitors.csv";
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
     }
 
-    function exportCSV() {
-      let csv = "Purpose,Name,Phone,ID Number,ID Attachment,No. of Visitors,Date & Time,Status\n";
-      records.forEach(record => {
-        csv += [
-          record.purpose,
-          record.name,
-          record.phone,
-          record.idNumber,
-          record.idAttachment,
-          record.visitorCount,
-          record.dateTime,
-          record.status
-        ].map(v => `"${v}"`).join(",") + "\n";
-      });
-      const blob = new Blob([csv], { type: 'text/csv' });
-      const a = document.createElement('a');
-      a.href = URL.createObjectURL(blob);
-      a.download = 'visitors.csv';
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
+    // Dropdown logic
+    function toggleDropdown() {
+      document.getElementById('profileDropdown').classList.toggle('show');
     }
 
     window.onclick = function(event) {
-      const addModal = document.getElementById('addModal');
-      if (event.target === addModal) {
-        hideAddModal();
+      if (!event.target.closest('.profile-info')) {
+        document.getElementById('profileDropdown').classList.remove('show');
       }
-    };
+    }
+
+    function logout() {
+      alert("You have been logged out!");
+      // Add real logout logic here if needed
+    }
+    function logout() {
+    window.location.href = "login1.html"; // login page par le jayega
+    }
+
   </script>
 
 </body>
