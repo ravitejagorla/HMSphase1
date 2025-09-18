@@ -249,7 +249,7 @@
         <div class="modal-content bg-white shadow-xl overflow-hidden animate-fade-in-down">
             <!-- Modal Header -->
             <div class="flex items-center justify-between p-4 bg-[#1e3a8a] text-white">
-                <h3 class="text-lg font-semibold">New Village</h3>
+                <h3 id="modal-title" class="text-lg font-semibold">New Village</h3>
                 <button id="close-modal-btn" class="bg-white/50 rounded-sm h-25 w-25 pl-1 pr-1 text-black text-4xl transition-colors">
                     &times;
                 </button>
@@ -288,7 +288,7 @@
             </div>
             <!-- Modal Footer -->
             <div class="p-4 flex justify-center space-x-2">
-                <button type="button" class="bg-blue-900 text-white px-4 py-2 rounded-lg font-semibold transition-colors">Create</button>
+                <button id="createBtn" type="button" class="bg-blue-900 text-white px-4 py-2 rounded-lg font-semibold transition-colors">Create</button>
                 <button type="button" id="close-modal-footer-btn" class="bg-blue-600 text-white px-4 py-2 rounded-lg font-semibold transition-colors">Close</button>
             </div>
         </div>
@@ -394,6 +394,8 @@
     document.getElementById("Pincode").value = "";
     document.getElementById("Area").value = "";
     document.getElementById("status").value = "Active";
+    document.getElementById("modal-title").textContent = "New Village";
+    createBtn.textContent = "Create";
     newVillageModal.classList.remove('hidden');
     });
 
@@ -401,7 +403,13 @@
     const hideModal = () => 
     {
     newVillageModal.classList.add('hidden');
+
+    // Re-enable fields and show Create button when closing modal
+    document.querySelectorAll("#new-village-modal input, #new-village-modal select")
+        .forEach(el => el.removeAttribute("disabled"));
+    createBtn.classList.remove("hidden");
     };
+
 
     closeModalBtn.addEventListener('click', hideModal);
     closeModalFooterBtn.addEventListener('click', hideModal);
@@ -413,7 +421,7 @@
       hideModal();
     }
     });
-
+    
     // =========================
     // Add New Village + Pagination
     // =========================
@@ -576,23 +584,53 @@
         document.getElementById("Area").value = row.children[2].innerText;
         document.getElementById("status").value = row.children[6].innerText.trim();
 
+        document.getElementById("modal-title").textContent = "Edit Village";
+        createBtn.textContent = "Update";
+
         newVillageModal.classList.remove("hidden");
     });
     
     // View details
     row.querySelector(".fa-eye").closest("button").addEventListener("click", () => 
-        {
-            alert
-            (
-                `Pincode: ${row.children[1].innerText}\n` +
-                `Area: ${row.children[2].innerText}\n` +
-                `City: ${row.children[3].innerText}\n` +
-                `State: ${row.children[4].innerText}\n` +
-                `Country: ${row.children[5].innerText}\n` +
-                `Status: ${row.children[6].innerText}\n` +
-                `Created: ${row.children[7].innerText}`
-            );
-        });
+    {
+    // Fill modal with row data
+    countrySelect.value = row.children[5].innerText;
+
+    // Populate state/city
+    stateSelect.innerHTML = `<option value="">Select State</option>`;
+    Object.keys(locationData[countrySelect.value]).forEach(st => 
+    {
+        const opt = document.createElement("option");
+        opt.value = st;
+        opt.textContent = st;
+        stateSelect.appendChild(opt);
+    });
+    stateSelect.value = row.children[4].innerText;
+
+    citySelect.innerHTML = `<option value="">Select City</option>`;
+    locationData[countrySelect.value][stateSelect.value].forEach(ct => 
+    {
+        const opt = document.createElement("option");
+        opt.value = ct;
+        opt.textContent = ct;
+        citySelect.appendChild(opt);
+    });
+    citySelect.value = row.children[3].innerText;
+
+    document.getElementById("Pincode").value = row.children[1].innerText;
+    document.getElementById("Area").value    = row.children[2].innerText;
+    document.getElementById("status").value  = row.children[6].innerText.trim();
+
+    // Disable inputs for view mode
+    document.querySelectorAll("#new-village-modal input, #new-village-modal select")
+        .forEach(el => el.setAttribute("disabled", "disabled"));
+
+    // Hide the Create button in view mode
+    createBtn.classList.add("hidden");
+
+    // Show modal
+    newVillageModal.classList.remove("hidden");
+    });
     }
 
     createBtn.addEventListener("click", () => 
@@ -917,7 +955,6 @@
     renderVillages();
     }
     </script>
-
 
 </body>
 </html>
