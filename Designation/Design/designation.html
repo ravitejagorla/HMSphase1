@@ -11,7 +11,6 @@
   <link rel="stylesheet" href="designation.css">
   <link href="rvm.png" rel="icon" sizes="16*16">
 </head>
-
 <body>
   <div class="wrapper">
     <nav class="sidebar">
@@ -153,41 +152,53 @@
                             style="background-color: white;"></button>
                         </div>
                         <div class="modal-body">
-                          <div class="form">
-                            <label class="form-label" for="" aria-required="true"><b>Department Name</b><span
-                                class="text-danger">*</span> </label>
-                            <select class="form-select" aria-label="Default select example">
+                          <form id="designationForm">
+                            <label class="form-label"><b>Department Name</b><span class="text-danger">*</span> </label>
+                            <select class="form-select" name="department" id="deptCreate">
                               <option selected>Select Department</option>
-                              <option value="1">Emergency Medicine</option>
-                              <option value="2">Cardiology</option>
-                              <option value="3">Oncology</option>
-                              <option value="4">Radiology</option>
-                              <option value="5">Pathology</option>
-                              <option value="6">Pharmacy</option>
-                              <option value="7">Physical Therapy</option>
-                              <option value="8">Admissions</option>
-                              <option value="9">Health Information Management</option>
-                              <option value="10">Housekeeping</option>
-                              <option value="11">Administrative and support</option>
+                              <option value="Emergency Medicine">Emergency Medicine</option>
+                              <option value="Cardiology">Cardiology</option>
+                              <option value="Oncology">Oncology</option>
+                              <option value="Radiology">Radiology</option>
+                              <option value="Pathology">Pathology</option>
+                              <option value="Pharmacy">Pharmacy</option>
+                              <option value="Physical Therapy">Physical Therapy</option>
+                              <option value="Admissions">Admissions</option>
+                              <option value="Health Information Management">Health Information Management</option>
+                              <option value="Housekeeping">Housekeeping</option>
+                              <option value="Administrative and support">Administrative and support</option>
+                              <!-- more options -->
                             </select>
                             <br>
-                            <label class="form-label" for="" aria-required="true"><b>Designation Name</b><span
-                                class="text-danger">*</span></label>
-                            <input type="text" class="form-control" placeholder="Enter Designation Name">
+
+                            <label class="form-label"><b>Designation Name</b><span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" name="designationName" id="nameCreate"
+                              placeholder="Enter Designation Name">
                             <br>
-                            <label class="form-label" for="" aria-required="true"><b>Designation Code</b><span
-                                class="text-danger">*</span></label>
-                            <input type="text" class="form-control" placeholder="Enter Designation Code">
+
+                            <label class="form-label"><b>Designation Code</b><span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" name="designationCode" id="codeCreate"
+                              placeholder="Enter Designation Code">
                             <br>
-                            <label class="form-label" for="" aria-required="true"><b>Short Description</b><span
-                                class="text-dark">*</span></label>
-                            <textarea class="form-control" name="" id=""
+
+                            <label class="form-label"><b>Short Description</b></label>
+                            <textarea class="form-control" name="description" id="descCreate"
                               placeholder="Enter Short Description"></textarea>
-                          </div>
+                            <br>
+
+                            <!-- NEW: Status field added (keeps your styles and order minimal) -->
+                            <label class="form-label"><b>Status</b></label>
+                            <select class="form-select" id="statusCreate">
+                              <option value="Active" selected>Active</option>
+                              <option value="Deactive">Deactive</option>
+                            </select>
+
+                          </form>
                         </div>
+
                         <center>
-                          <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>
-                          <button type="button" class="btn btn-primary"
+                          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                          <button type="button" id="createBtn" class="btn btn-primary"
                             style="background-color: rgb(48, 72, 156);">Create</button>
                         </center>
                         <br>
@@ -247,7 +258,8 @@
 
                   <div class="col-md-3" style="float: right;">
                     <form class="d-flex" role="search">
-                      <input class="form-control me-3" type="search" placeholder="Search" aria-label="Search" />
+                      <input id="searchInput" class="form-control me-3" type="search" placeholder="Search"
+                        aria-label="Search" />
                     </form>
                   </div>
                   <div class="jumbotron">
@@ -261,342 +273,25 @@
                           <th style="background-color: rgb(48, 72, 156); color:white">CREATED DATE</th>
                           <th style="background-color: rgb(48, 72, 156); color:white">ACTIONS</th>
                         </tr>
-                        <tr>
-                          <td>1</td>
-                          <td>Cardiology</td>
-                          <td>DR</td>
-                          <td><span class="badge text-bg-success">Active</span></td>
-                          <td>22-04-25,08:30 PM</td>
-                          <td>
-                            <div class="btn btn-xm" style="background-color: rgb(48, 72, 156);" data-bs-toggle="modal"
-                              data-bs-target="#view"><svg style="color: white;" xmlns="http://www.w3.org/2000/svg"
-                                width="16" height="16" fill="currentColor" class="bi bi-eye-fill" viewBox="0 2 16 16">
-                                <path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0" />
-                                <path
-                                  d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8m8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7" />
-                              </svg></div>
-                            <div class="modal fade" id="view" tabindex="-1" aria-labelledby="view" aria-hidden="true">
-                              <div class="modal-dialog">
-                                <div class="modal-content">
-                                  <div class="modal-header" style="background-color: rgb(48, 72, 156);">
-                                    <h1 class="modal-title fs-5" id="exampleModalLabel" style="color: white;">
-                                      Designation
-                                      Details</h1>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
-                                      style="background-color: white;"></button>
-                                  </div>
-                                  <div class="modal-body">
-                                    <!-- <div class="table table-bordered"> -->
-                                    <table class="table table-bordered">
-                                      <tr>
-                                        <th>Department Name</th>
-                                        <td>Cardiology</td>
-                                      </tr>
-                                      <tr>
-                                        <th>Designation Name</th>
-                                        <td>Doctor</td>
-                                      </tr>
-                                      <tr>
-                                        <th>Designation Code</th>
-                                        <td>Dr</td>
-                                      </tr>
-                                      <tr>
-                                        <th>Status</th>
-                                        <td><span class="badge text-bg-success">Active</span></td>
-                                      </tr>
-                                      <tr>
-                                        <th>Created Date</th>
-                                        <td>22-04-25,08:30 PM</td>
-                                      </tr>
-                                    </table>
-                                    <!-- </div> -->
-                                  </div>
-                                  <center>
-                                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>
-                                  </center>
-                                  <br>
-                                </div>
-                              </div>
-                            </div>
-                            <div class="btn btn-xm btn-primary" data-bs-toggle="modal" data-bs-target="#edit"><svg
-                                xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                                class="bi bi-pencil-fill" viewBox="0 1 16 16">
-                                <path
-                                  d="M12.854.146a.5.5 0 0 0-.707 0L10.5 1.793 14.207 5.5l1.647-1.646a.5.5 0 0 0 0-.708zm.646 6.061L9.793 2.5 3.293 9H3.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.207zm-7.468 7.468A.5.5 0 0 1 6 13.5V13h-.5a.5.5 0 0 1-.5-.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.5-.5V10h-.5a.5.5 0 0 1-.175-.032l-.179.178a.5.5 0 0 0-.11.168l-2 5a.5.5 0 0 0 .65.65l5-2a.5.5 0 0 0 .168-.11z" />
-                              </svg></div>
-                            <div class="modal fade" id="edit" tabindex="-1" aria-labelledby="edit" aria-hidden="true">
-                              <div class="modal-dialog">
-                                <div class="modal-content">
-                                  <div class="modal-header" style="background-color: rgb(48, 72, 156);">
-                                    <h1 class="modal-title fs-5" id="edit" style="color: white;">Edit Designation
-                                      Details
-                                    </h1>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
-                                      style="background-color: white;"></button>
-                                  </div>
-                                  <div class="modal-body">
-                                    <div class="form">
-                                      <label class="form-label" for="" aria-required="true"><b>Department Name</b><span
-                                          class="text-danger">*</span> </label>
-                                      <select class="form-select" aria-label="Default select example">
-                                        <option selected>Select Department</option>
-                                        <option value="1">Emergency Medicine</option>
-                                        <option value="2">Cardiology</option>
-                                        <option value="3">Oncology</option>
-                                        <option value="4">Radiology</option>
-                                        <option value="5">Pathology</option>
-                                        <option value="6">Pharmacy</option>
-                                        <option value="7">Physical Therapy</option>
-                                        <option value="8">Admissions</option>
-                                        <option value="9">Health Information Management</option>
-                                        <option value="10">Housekeeping</option>
-                                        <option value="11">Administrative and support</option>
-                                      </select>
-                                      <br>
-                                      <label class="form-label" for="" aria-required="true"><b>Designation Name</b><span
-                                          class="text-danger">*</span></label>
-                                      <input type="text" class="form-control" placeholder="Enter Designation Name">
-                                      <br>
-                                      <label class="form-label" for="" aria-required="true"><b>Designation Code</b><span
-                                          class="text-danger">*</span></label>
-                                      <input type="text" class="form-control" placeholder="Enter Designation Code">
-                                      <br>
-                                      <label class="form-label" for="" aria-required="true"><b>Short
-                                          Description</b><span class="text-dark">*</span></label>
-                                      <textarea class="form-control" name="" id=""
-                                        placeholder="Enter Short Description"></textarea>
-                                    </div>
-                                  </div>
-                                  <center>
-                                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>
-                                    <button type="button" class="btn btn-primary"
-                                      style="background-color: rgb(48, 72, 156);">Update</button>
-                                  </center>
-                                  <br>
-                                </div>
-                              </div>
-                            </div>
-                            <div class="btn btn-xm btn-danger" data-bs-toggle="modal" data-bs-target="#delete"><svg
-                                xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                                class="bi bi-trash-fill" viewBox="0 0 16 16">
-                                <path
-                                  d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5M8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5m3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0" />
-                              </svg></div>
-                            <div class="modal fade" id="delete" tabindex="-1" aria-labelledby="delete"
-                              aria-hidden="true">
-                              <div class="modal-dialog">
-                                <div class="modal-content">
-                                  <div class="modal-header" style="background-color: rgb(245, 63, 63);">
-                                    <h1 class="modal-title fs-5" id="exampleModalLabel" style="color: white;">
-                                      Delete
-                                      Designation</h1> <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                      aria-label="Close" style="background-color: white;"></button>
-                                  </div>
-                                  <div class="modal-body">
-                                    <center>
-                                      <svg xmlns="http://www.w3.org/2000/svg" width="100" height="100"
-                                        fill="currentColor" class="bi bi-trash3" viewBox="0 0 16 16"
-                                        style="color: red;">
-                                        <path
-                                          d="M6.5 1h3a.5.5 0 0 1 .5.5v1H6v-1a.5.5 0 0 1 .5-.5M11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3A1.5 1.5 0 0 0 5 1.5v1H1.5a.5.5 0 0 0 0 1h.538l.853 10.66A2 2 0 0 0 4.885 16h6.23a2 2 0 0 0 1.994-1.84l.853-10.66h.538a.5.5 0 0 0 0-1zm1.958 1-.846 10.58a1 1 0 0 1-.997.92h-6.23a1 1 0 0 1-.997-.92L3.042 3.5zm-7.487 1a.5.5 0 0 1 .528.47l.5 8.5a.5.5 0 0 1-.998.06L5 5.03a.5.5 0 0 1 .47-.53Zm5.058 0a.5.5 0 0 1 .47.53l-.5 8.5a.5.5 0 1 1-.998-.06l.5-8.5a.5.5 0 0 1 .528-.47M8 4.5a.5.5 0 0 1 .5.5v8.5a.5.5 0 0 1-1 0V5a.5.5 0 0 1 .5-.5" />
-                                      </svg>
-                                      <h4>Are you sure?</h4>
-                                      <p>Are you sure you want to remove this</p>
-                                      <p>designation?</p>
-                                      <p style="color: red;">Doctor</p>
-                                  </div>
-                                  <center>
-                                    <button type="button" class="btn btn-light" data-bs-dismiss="modal">Cancel</button>
-                                    <button type="button" class="btn btn-danger">Yes delete it!</button>
-                                  </center>
-                                  </center>
-                                  <br>
-
-                                </div>
-                              </div>
-                          </td>
-
-                        </tr>
-                        <tr>
-                          <td>2</td>
-                          <td>Oncology</td>
-                          <td>DR</td>
-                          <td><span class="badge text-bg-success">Active</span></td>
-                          <td>23-04-25,10:30 AM</td>
-                          <td>
-                            <div class="btn btn-xm" style="background-color: rgb(48, 72, 156);" data-bs-toggle="modal"
-                              data-bs-target="#view2"><svg style="color: white;" xmlns="http://www.w3.org/2000/svg"
-                                width="16" height="16" fill="currentColor" class="bi bi-eye-fill" viewBox="0 2 16 16">
-
-                                <path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0" />
-
-                                <path
-                                  d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8m8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7" />
-                              </svg></div>
-                            <div class="modal fade" id="view2" tabindex="-1" aria-labelledby="view2" aria-hidden="true">
-                              <div class="modal-dialog">
-                                <div class="modal-content">
-                                  <div class="modal-header" style="background-color: rgb(48, 72, 156);">
-                                    <h1 class="modal-title fs-5" id="exampleModalLabel" style="color: white;">
-                                      Designation
-                                      Details</h1>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
-                                      style="background-color: white;"></button>
-                                  </div>
-                                  <div class="modal-body">
-                                    <table class="table table-bordered">
-                                      <tr>
-                                        <th>Department Name</th>
-                                        <td>Oncology</td>
-                                      </tr>
-                                      <tr>
-                                        <th>Designation Name</th>
-                                        <td>Doctor</td>
-                                      </tr>
-                                      <tr>
-                                        <th>Designation Code</th>
-                                        <td>Dr</td>
-                                      </tr>
-                                      <tr>
-                                        <th>Status</th>
-                                        <td><span class="badge text-bg-success">Active</span></td>
-                                      </tr>
-                                      <tr>
-                                        <th>Created Date</th>
-                                        <td>23-04-25,10:30 AM</td>
-                                      </tr>
-                                    </table>
-                                  </div>
-                                  <center>
-                                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>
-                                  </center>
-                                  <br>
-                                </div>
-                              </div>
-                            </div>
-                            <div class="btn btn-xm btn-primary" data-bs-toggle="modal" data-bs-target="#edit2"><svg
-                                xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                                class="bi bi-pencil-fill" viewBox="0 1 16 16">
-
-                                <path
-                                  d="M12.854.146a.5.5 0 0 0-.707 0L10.5 1.793 14.207 5.5l1.647-1.646a.5.5 0 0 0 0-.708zm.646 6.061L9.793 2.5 3.293 9H3.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.207zm-7.468 7.468A.5.5 0 0 1 6 13.5V13h-.5a.5.5 0 0 1-.5-.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.5-.5V10h-.5a.5.5 0 0 1-.175-.032l-.179.178a.5.5 0 0 0-.11.168l-2 5a.5.5 0 0 0 .65.65l5-2a.5.5 0 0 0 .168-.11z" />
-
-                              </svg></div>
-                            <div class="modal fade" id="edit2" tabindex="-1" aria-labelledby="edit2" aria-hidden="true">
-                              <div class="modal-dialog">
-                                <div class="modal-content">
-                                  <div class="modal-header" style="background-color: rgb(48, 72, 156);">
-                                    <h1 class="modal-title fs-5" id="edit" style="color: white;">Edit Designation
-                                      Details
-                                    </h1>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
-                                      style="background-color: white;"></button>
-                                  </div>
-                                  <div class="modal-body">
-                                    <div class="form">
-                                      <label class="form-label" for="" aria-required="true"><b>Department Name</b><span
-                                          class="text-danger">*</span> </label>
-                                      <select class="form-select" aria-label="Default select edit2">
-                                        <option selected>Select Department</option>
-                                        <option value="1">Emergency Medicine</option>
-                                        <option value="2">Cardiology</option>
-                                        <option value="3">Oncology</option>
-                                        <option value="4">Radiology</option>
-                                        <option value="5">Pathology</option>
-                                        <option value="6">Pharmacy</option>
-                                        <option value="7">Physical Therapy</option>
-                                        <option value="8">Admissions</option>
-                                        <option value="9">Health Information Management</option>
-                                        <option value="10">Housekeeping</option>
-                                        <option value="11">Administrative and support</option>
-                                      </select>
-                                      <br>
-                                      <label class="form-label" for="" aria-required="true"><b>Designation Name</b><span
-                                          class="text-danger">*</span></label>
-                                      <input type="text" class="form-control" placeholder="Enter Designation Name">
-
-                                      <br>
-                                      <label class="form-label" for="" aria-required="true"><b>Designation Code</b><span
-                                          class="text-danger">*</span></label>
-                                      <input type="text" class="form-control" placeholder="Enter Designation Code">
-
-                                      <br>
-                                      <label class="form-label" for="" aria-required="true"><b>Short
-                                          Description</b><span class="text-dark">*</span></label>
-                                      <textarea class="form-control" name="" id=""
-                                        placeholder="Enter Short Description"></textarea>
-                                    </div>
-
-                                  </div>
-                                  <center>
-                                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>
-                                    <button type="button" class="btn btn-primary"
-                                      style="background-color: rgb(48, 72, 156);">Update</button>
-                                  </center>
-                                  <br>
-                                </div>
-                              </div>
-                            </div>
-
-                            <div class="btn btn-xm btn-danger" data-bs-toggle="modal" data-bs-target="#delete2"><svg
-                                xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                                class="bi bi-trash-fill" viewBox="0 0 16 16">
-
-                                <path
-                                  d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5M8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5m3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0" />
-
-                              </svg></div>
-                            <div class="modal fade" id="delete2" tabindex="-1" aria-labelledby="delete2"
-                              aria-hidden="true">
-                              <div class="modal-dialog">
-                                <div class="modal-content">
-                                  <div class="modal-header" style="background-color: rgb(245, 63, 63);">
-                                    <h1 class="modal-title fs-5" id="exampleModalLabel" style="color: white;">
-                                      Delete
-                                      Designation</h1> <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                      aria-label="Close" style="background-color: white;"></button>
-                                  </div>
-                                  <div class="modal-body">
-                                    <center>
-                                      <svg xmlns="http://www.w3.org/2000/svg" width="100" height="100"
-                                        fill="currentColor" class="bi bi-trash3" viewBox="0 0 16 16"
-                                        style="color: red;">
-                                        <path
-                                          d="M6.5 1h3a.5.5 0 0 1 .5.5v1H6v-1a.5.5 0 0 1 .5-.5M11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3A1.5 1.5 0 0 0 5 1.5v1H1.5a.5.5 0 0 0 0 1h.538l.853 10.66A2 2 0 0 0 4.885 16h6.23a2 2 0 0 0 1.994-1.84l.853-10.66h.538a.5.5 0 0 0 0-1zm1.958 1-.846 10.58a1 1 0 0 1-.997.92h-6.23a1 1 0 0 1-.997-.92L3.042 3.5zm-7.487 1a.5.5 0 0 1 .528.47l.5 8.5a.5.5 0 0 1-.998.06L5 5.03a.5.5 0 0 1 .47-.53Zm5.058 0a.5.5 0 0 1 .47.53l-.5 8.5a.5.5 0 1 1-.998-.06l.5-8.5a.5.5 0 0 1 .528-.47M8 4.5a.5.5 0 0 1 .5.5v8.5a.5.5 0 0 1-1 0V5a.5.5 0 0 1 .5-.5" />
-                                      </svg>
-                                      <h4>Are you sure?</h4>
-                                      <p>Are you sure you want to remove this</p>
-                                      <p>designation?</p>
-                                      <p style="color: red;">Doctor</p>
-                                  </div>
-                                  </center>
-                                  <center>
-                                    <button type="button" class="btn btn-light" data-bs-dismiss="modal">Cancel</button>
-                                    <button type="button" class="btn btn-danger">Yes delete it!</button>
-                                  </center>
-                                  <br>
-
-                                </div>
-                              </div>
-                          </td>
-                        </tr>
-                        
+                        <tbody id="designationsTableBody">
+                          <!-- populated by JS -->
+                        </tbody>
                       </table>
-                    </div>
-                    <nav aria-label="...">
-                      <ul class="pagination offset-md-5">
-                        <li class="page-item disabled ">
-                          <a class="page-link" style="border-radius: 10px;">Previous</a>
-                        </li>&nbsp;&nbsp;
-                        <li class="page-item active "><a class="page-link" href="#"
-                            style="border-radius: 10px; background-color: rgb(48, 72, 156); color: white;">1</a>
-                        </li>&nbsp;&nbsp;
-                        <li class="page-item ">
-                          <a class="page-link" href="#" style="border-radius: 10px;">Next</a>
-                        </li>
-                      </ul>
-                    </nav>
+                      <nav aria-label="...">
+                        <ul class="pagination offset-md-5">
+                          <li class="page-item disabled ">
+                            <a class="page-link" style="border-radius: 10px;">Previous</a>
+                          </li>&nbsp;&nbsp;
+                          <li class="page-item active "><a class="page-link" href="#"
+                              style="border-radius: 10px; background-color: rgb(48, 72, 156); color: white;">1</a>
+                          </li>&nbsp;&nbsp;
+                          <li class="page-item ">
+                            <a class="page-link" href="#" style="border-radius: 10px;">Next</a>
+                          </li>
+                        </ul>
+                      </nav>
 
+                    </div>
                   </div>
                 </div>
               </div>
@@ -617,11 +312,323 @@
         <p class="mb-0">Design & develop by Peramsons Software</p>
       </div>
     </footer>
-    <!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script> -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
-      integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
-      crossorigin="anonymous"></script>
 
+    <!-- VIEW modal (keeps original look and id) -->
+    <div class="modal fade" id="view" tabindex="-1" aria-labelledby="viewLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header" style="background-color: rgb(48, 72, 156);">
+            <h1 class="modal-title fs-5" id="viewLabel" style="color: white;">Designation Details</h1>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+              style="background-color: white;"></button>
+          </div>
+          <div class="modal-body">
+            <table class="table table-bordered">
+              <tr>
+                <th>Department Name</th>
+                <td id="viewDept"></td>
+              </tr>
+              <tr>
+                <th>Designation Name</th>
+                <td id="viewName"></td>
+              </tr>
+              <tr>
+                <th>Designation Code</th>
+                <td id="viewCode"></td>
+              </tr>
+              <tr>
+                <th>Status</th>
+                <td id="viewStatusCell"></td>
+              </tr>
+              <tr>
+                <th>Created Date</th>
+                <td id="viewDate"></td>
+              </tr>
+              <tr>
+                <th>Short Description</th>
+                <td id="viewDesc"></td>
+              </tr>
+            </table>
+          </div>
+          <center>
+            <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>
+          </center>
+          <br>
+        </div>
+      </div>
+    </div>
+
+    <!-- EDIT modal (keeps original id and look) -->
+    <div class="modal fade" id="edit" tabindex="-1" aria-labelledby="editLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header" style="background-color: rgb(48, 72, 156);">
+            <h1 class="modal-title fs-5" id="editLabel" style="color: white;">Edit Designation Details</h1>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+              style="background-color: white;"></button>
+          </div>
+          <div class="modal-body">
+            <div class="form">
+              <label class="form-label" for="" aria-required="true"><b>Department Name</b><span
+                  class="text-danger">*</span> </label>
+              <select class="form-select" id="deptEdit">
+                <option selected>Select Department</option>
+                <option value="Emergency Medicine">Emergency Medicine</option>
+                <option value="Cardiology">Cardiology</option>
+                <option value="Oncology">Oncology</option>
+                <option value="Radiology">Radiology</option>
+                <option value="Pathology">Pathology</option>
+                <option value="Pharmacy">Pharmacy</option>
+                <option value="Physical Therapy">Physical Therapy</option>
+                <option value="Admissions">Admissions</option>
+                <option value="Health Information Management">Health Information Management</option>
+                <option value="Housekeeping">Housekeeping</option>
+                <option value="Administrative and support">Administrative and support</option>
+              </select>
+              <br>
+              <label class="form-label" for="" aria-required="true"><b>Designation Name</b><span
+                  class="text-danger">*</span></label>
+              <input type="text" class="form-control" id="nameEdit" placeholder="Enter Designation Name">
+              <br>
+              <label class="form-label" for="" aria-required="true"><b>Designation Code</b><span
+                  class="text-danger">*</span></label>
+              <input type="text" class="form-control" id="codeEdit" placeholder="Enter Designation Code">
+              <br>
+              <label class="form-label" for="" aria-required="true"><b>Short Description</b><span
+                  class="text-dark">*</span></label>
+              <textarea class="form-control" name="" id="descEdit" placeholder="Enter Short Description"></textarea>
+              <br>
+              <label class="form-label"><b>Status</b></label>
+              <select class="form-select" id="statusEdit">
+                <option value="Active">Active</option>
+                <option value="Deactive">Deactive</option>
+              </select>
+            </div>
+          </div>
+          <center>
+            <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>
+            <button type="button" id="updateBtn" class="btn btn-primary"
+              style="background-color: rgb(48, 72, 156);">Update</button>
+          </center>
+          <br>
+        </div>
+      </div>
+    </div>
+
+    <!-- DELETE modal (restored to original content/structure) -->
+    <div class="modal fade" id="delete" tabindex="-1" aria-labelledby="deleteLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header" style="background-color: rgb(245, 63, 63);">
+            <h1 class="modal-title fs-5" id="deleteLabel" style="color: white;">
+              Delete
+              Designation</h1> <button type="button" class="btn-close" data-bs-dismiss="modal"
+              aria-label="Close" style="background-color: white;"></button>
+          </div>
+          <div class="modal-body">
+            <center>
+              <svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" fill="currentColor" class="bi bi-trash3"
+                viewBox="0 0 16 16" style="color: red;">
+                <path
+                  d="M6.5 1h3a.5.5 0 0 1 .5.5v1H6v-1a.5.5 0 0 1 .5-.5M11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3A1.5 1.5 0 0 0 5 1.5v1H1.5a.5.5 0 0 0 0 1h.538l.853 10.66A2 2 0 0 0 4.885 16h6.23a2 2 0 0 0 1.994-1.84l.853-10.66h.538a.5.5 0 0 0 0-1zm1.958 1-.846 10.58a1 1 0 0 1-.997.92h-6.23a1 1 0 0 1-.997-.92L3.042 3.5zm-7.487 1a.5.5 0 0 1 .528.47l.5 8.5a.5.5 0 0 1-.998.06L5 5.03a.5.5 0 0 1 .47-.53Zm5.058 0a.5.5 0 0 1 .47.53l-.5 8.5a.5.5 0 1 1-.998-.06l.5-8.5a.5.5 0 0 1 .528-.47M8 4.5a.5.5 0 0 1 .5.5v8.5a.5.5 0 0 1-1 0V5a.5.5 0 0 1 .5-.5">
+                </path>
+              </svg>
+              <h4>Are you sure?</h4>
+              <p>Are you sure you want to remove this</p>
+              <p>designation?</p>
+              <p id="deleteName" style="color: red;">Doctor</p>
+            </center>
+          </div>
+          <center>
+            <button type="button" class="btn btn-light" data-bs-dismiss="modal">Cancel</button>
+            <button type="button" id="confirmDelete" class="btn btn-danger">Yes delete it!</button>
+          </center>
+          <br>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
+    crossorigin="anonymous"></script>
+
+  <script>
+    // keep same sample rows as original
+    let data = [
+      { id: 1, department: 'Cardiology', name: 'Doctor', code: 'DR', status: 'Active', date: '22-04-25,08:30 PM', desc: 'Cardiology doctor' },
+      { id: 2, department: 'Oncology', name: 'Doctor', code: 'DR', status: 'Active', date: '23-04-25,10:30 AM', desc: 'Oncology doctor' }
+    ];
+
+    let editId = null;
+    let deleteId = null;
+
+    function esc(s) {
+      if (s === null || s === undefined) return '';
+      return String(s).replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('>', '&gt;');
+    }
+
+    function renderTable(items = data) {
+      const tbody = document.getElementById('designationsTableBody');
+      tbody.innerHTML = '';
+
+      if (!items.length) {
+        tbody.innerHTML = '<tr><td class="text-center" colspan="6">No records found</td></tr>';
+        return;
+      }
+
+      items.forEach((row, idx) => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td>${idx + 1}</td>
+          <td>${esc(row.department)}</td>
+          <td>${esc(row.code)}</td>
+          <td>${row.status === 'Active' ? '<span class="badge text-bg-success">Active</span>' : '<span class="badge text-bg-danger">Deactive</span>'}</td>
+          <td>${esc(row.date)}</td>
+          <td>
+            <div class="btn btn-xm" style="background-color: rgb(48, 72, 156);" data-bs-toggle="modal" data-bs-target="#view" data-id="${row.id}">
+              <svg style="color: white;" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-eye-fill" viewBox="0 2 16 16">
+                <path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0" />
+                <path d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8m8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7" />
+              </svg>
+            </div>
+
+            <div class="btn btn-xm btn-primary" data-bs-toggle="modal" data-bs-target="#edit" data-id="${row.id}">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-fill" viewBox="0 1 16 16">
+                <path d="M12.854.146a.5.5 0 0 0-.707 0L10.5 1.793 14.207 5.5l1.647-1.646a.5.5 0 0 0 0-.708zm.646 6.061L9.793 2.5 3.293 9H3.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.207zm-7.468 7.468A.5.5 0 0 1 6 13.5V13h-.5a.5.5 0 0 1-.5-.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.5-.5V10h-.5a.5.5 0 0 1-.175-.032l-.179.178a.5.5 0 0 0-.11.168l-2 5a.5.5 0 0 0 .65.65l5-2a.5.5 0 0 0 .168-.11z"/>
+              </svg>
+            </div>
+
+            <div class="btn btn-xm btn-danger" data-bs-toggle="modal" data-bs-target="#delete" data-id="${row.id}">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash-fill" viewBox="0 0 16 16">
+                <path d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5M8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5m3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0"/>
+              </svg>
+            </div>
+          </td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    // initial render
+    document.addEventListener('DOMContentLoaded', function () {
+      renderTable();
+    });
+
+    // Use Bootstrap's show.bs.modal event to populate modals based on the triggering element
+    const viewModalEl = document.getElementById('view');
+    viewModalEl.addEventListener('show.bs.modal', function (event) {
+      const button = event.relatedTarget; // Element that triggered the modal
+      const id = Number(button.getAttribute('data-id'));
+      const rec = data.find(d => d.id === id);
+      if (!rec) return;
+      document.getElementById('viewDept').innerText = rec.department;
+      document.getElementById('viewName').innerText = rec.name;
+      document.getElementById('viewCode').innerText = rec.code;
+      document.getElementById('viewStatusCell').innerHTML = rec.status === 'Active' ? '<span class="badge text-bg-success">Active</span>' : '<span class="badge text-bg-danger">Deactive</span>';
+      document.getElementById('viewDate').innerText = rec.date;
+      document.getElementById('viewDesc').innerText = rec.desc || '';
+    });
+
+    const editModalEl = document.getElementById('edit');
+    editModalEl.addEventListener('show.bs.modal', function (event) {
+      const button = event.relatedTarget;
+      const id = Number(button.getAttribute('data-id'));
+      const rec = data.find(d => d.id === id);
+      if (!rec) return;
+      editId = id;
+      document.getElementById('deptEdit').value = rec.department;
+      document.getElementById('nameEdit').value = rec.name;
+      document.getElementById('codeEdit').value = rec.code;
+      document.getElementById('descEdit').value = rec.desc || '';
+      document.getElementById('statusEdit').value = rec.status;
+    });
+
+    const deleteModalEl = document.getElementById('delete');
+    deleteModalEl.addEventListener('show.bs.modal', function (event) {
+      const button = event.relatedTarget;
+      const id = Number(button.getAttribute('data-id'));
+      const rec = data.find(d => d.id === id);
+      deleteId = id;
+      document.getElementById('deleteName').innerText = rec ? rec.name : '';
+    });
+
+    // update action
+    document.getElementById('updateBtn').addEventListener('click', function () {
+      if (!editId) return;
+      const rec = data.find(d => d.id === editId);
+      if (!rec) return;
+      const dept = document.getElementById('deptEdit').value.trim();
+      const name = document.getElementById('nameEdit').value.trim();
+      const code = document.getElementById('codeEdit').value.trim();
+      const desc = document.getElementById('descEdit').value.trim();
+      const status = document.getElementById('statusEdit').value;
+      if (!dept || !name || !code) {
+        alert('Please fill required fields');
+        return;
+      }
+      rec.department = dept;
+      rec.name = name;
+      rec.code = code;
+      rec.desc = desc;
+      rec.status = status;
+      rec.date = new Date().toLocaleString();
+      renderTable();
+      bootstrap.Modal.getInstance(document.getElementById('edit')).hide();
+      editId = null;
+    });
+
+    // delete confirm
+    document.getElementById('confirmDelete').addEventListener('click', function () {
+      if (!deleteId) return;
+      data = data.filter(d => d.id !== deleteId);
+      renderTable();
+      bootstrap.Modal.getInstance(document.getElementById('delete')).hide();
+      deleteId = null;
+    });
+
+    // create
+    document.getElementById('createBtn').addEventListener('click', function () {
+      const dept = document.getElementById('deptCreate').value.trim();
+      const name = document.getElementById('nameCreate').value.trim();
+      const code = document.getElementById('codeCreate').value.trim();
+      const desc = document.getElementById('descCreate').value.trim();
+      const status = document.getElementById('statusCreate').value;
+      if (!dept || !name || !code) {
+        alert('Please fill required fields');
+        return;
+      }
+      data.push({
+        id: Date.now(),
+        department: dept,
+        name: name,
+        code: code,
+        status: status || 'Active',
+        date: new Date().toLocaleString(),
+        desc: desc
+      });
+      renderTable();
+      document.getElementById('designationForm').reset();
+      bootstrap.Modal.getInstance(document.getElementById('exampleModal')).hide();
+    });
+
+    // search (keeps your original behavior)
+    document.getElementById('searchInput').addEventListener('input', function () {
+      const q = this.value.trim().toLowerCase();
+      if (!q) {
+        renderTable();
+        return;
+      }
+      const filtered = data.filter(d =>
+        (d.department || '').toLowerCase().includes(q) ||
+        (d.name || '').toLowerCase().includes(q) ||
+        (d.code || '').toLowerCase().includes(q) ||
+        (d.status || '').toLowerCase().includes(q) ||
+        (d.date || '').toLowerCase().includes(q)
+      );
+      renderTable(filtered);
+    });
+  </script>
 </body>
-
 </html>
