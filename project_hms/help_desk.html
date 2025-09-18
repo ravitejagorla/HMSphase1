@@ -1,0 +1,920 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>RVM Help Desk</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
+  <style>
+    body { margin:0; font-family:Arial,sans-serif; background:#f4f6fb; }
+    .overlay { position:fixed; top:0; left:50%; transform:translateX(-50%);
+      width:100%; height:45%; background:rgba(44,62,117,0.95);
+      clip-path: ellipse(70% 100% at 50% 0%); z-index:-1;
+      display:flex; justify-content:center; align-items:center; }
+    .overlay img { max-height:100%; max-width:100%; opacity:0.15; }
+    .login-container { background:#fff; padding:40px; border-radius:8px; width:380px; box-shadow:0 4px 20px rgba(0,0,0,0.2); text-align:center; position:relative; z-index:1; }
+    .login-container img { width:100px; margin-bottom:10px; }
+    .login-container h2 { font-size:20px; margin:10px 0; color:#2c3e75; }
+    .login-container p { font-size:14px; color:#666; margin-bottom:20px; }
+    .login-container label { display:block; text-align:left; font-size:14px; margin-bottom:5px; color:#333; }
+    .login-container input[type="text"], .login-container input[type="password"] { width:100%; padding:10px; border:1px solid #ddd; border-radius:5px; margin-bottom:15px; font-size:14px; }
+    .remember-me { display:flex; align-items:center; margin-bottom:20px; font-size:14px; color:#444; }
+    .remember-me input { margin-right:8px; }
+    .login-container button { width:100%; padding:12px; border:none; border-radius:5px; background:#2e3c76; color:white; font-size:16px; cursor:pointer; }
+    .login-container button:hover { background:#3e4c94; }
+    footer { text-align:center; font-size:13px; }
+    .table-scroll { max-height:400px; overflow-y:auto; }
+    #new-grievance-modal .modal-content, #general-settings-modal .modal-content { max-height: 90vh; overflow-y: auto; }
+    .help-card {
+      border: 1px solid #ddd;
+      border-radius: 12px;
+      padding: 20px;
+      text-align: center;
+      transition: all 0.3s;
+      cursor: pointer;
+      background: #f8f9fa;
+    }
+    .help-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+    }
+    .help-card i {
+      font-size: 2rem;
+      margin-bottom: 10px;
+      color: #0d6efd;
+    }
+    .hidden {
+      display: none;
+    }
+    header, footer { text-align: center; }
+    /* Add table scrolling for the table container */
+    .table-scroll {
+        max-height: 400px;
+        overflow-y: auto;
+    }
+    #new-grievance-modal .modal-content {
+      max-height: 90vh;
+      overflow-y: auto;
+    }
+    /* Dashboard cards */
+    .dashboard-card {
+      border-radius: 12px;
+      padding: 20px;
+      text-align: center;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      transition: all 0.3s;
+      background: white;
+    }
+    .dashboard-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+    }
+    .dashboard-card i {
+      font-size: 2.5rem;
+      margin-bottom: 15px;
+    }
+    /* Animation for modal */
+    @keyframes fadeInDown { from { opacity:0; transform: translateY(-20px);} to {opacity:1; transform: translateY(0);} }
+    .animate-fade-in-down { animation: fadeInDown 0.3s ease-out; }
+    /* Dark mode styles */
+    body.dark {
+      background-color: #1f2937;
+      color: #f3f4f6;
+    }
+    body.dark .login-container {
+      background-color: #374151;
+      color: #f3f4f6;
+    }
+    body.dark .login-container label,
+    body.dark .login-container p {
+      color: #f3f4f6;
+    }
+    body.dark .login-container input {
+      background-color: #4b5563;
+      color: #f3f4f6;
+      border-color: #6b7280;
+    }
+    body.dark aside {
+      background-color: #111827;
+    }
+    body.dark .navbar {
+      background-color: #1f2937;
+      color: #f3f4f6;
+    }
+    body.dark .bg-white {
+      background-color: #374151 !important;
+      color: #f3f4f6;
+    }
+    body.dark .dashboard-card {
+      background-color: #4b5563;
+      color: #f3f4f6;
+    }
+    body.dark .help-card {
+      background-color: #4b5563;
+      color: #f3f4f6;
+      border-color: #6b7280;
+    }
+    body.dark .table-scroll {
+      background-color: #374151;
+      color: #f3f4f6;
+    }
+    body.dark table {
+      border-color: #6b7280;
+    }
+    body.dark th {
+      background-color: #1e40af !important;
+    }
+    body.dark td {
+      border-color: #6b7280;
+    }
+    body.dark input, body.dark select {
+      background-color: #4b5563;
+      color: #f3f4f6;
+      border-color: #6b7280;
+    }
+    .logo {
+      display: block;
+      margin: 0 auto;   /* centers horizontally */
+      max-width: 150px; /* adjust size */
+      height: auto;
+    }
+    /* Profile dropdown styles */
+    .profile-dropdown {
+      position: relative;
+      display: inline-block;
+    }
+    .dropdown-content {
+      display: none;
+      position: absolute;
+      right: 0;
+      top: 100%;
+      background-color: #f9f9f9;
+      min-width: 160px;
+      box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+      z-index: 1000;
+      border-radius: 4px;
+      overflow: hidden;
+    }
+    .dropdown-content a {
+      color: black;
+      padding: 12px 16px;
+      text-decoration: none;
+      display: block;
+      text-align: left;
+    }
+    .dropdown-content a:hover {
+      background-color: #f1f1f1;
+    }
+    .show {
+      display: block;
+    }
+    body.dark .dropdown-content {
+      background-color: #374151;
+      color: #f3f4f6;
+    }
+    body.dark .dropdown-content a {
+      color: #f3f4f6;
+    }
+    body.dark .dropdown-content a:hover {
+      background-color: #4b5563;
+    }
+    /* Pagination button styles */
+    .pagination-btn {
+      padding: 0.25rem 0.75rem;
+      border-radius: 0.25rem;
+    }
+  </style>
+</head>
+<body>
+
+<!-- LOGIN PAGE -->
+<div id="login-page" class="flex flex-col items-center justify-center h-screen w-full relative">
+  <div class="overlay"><img src="doctor.png" alt="Doctor"></div>
+  <div class="login-container">
+    <div style="text-align: center;">
+      <img src="RVM.png" alt="RVM Logo" class="logo">
+    </div>
+    <h2>Welcome To RVM Help Desk!</h2>
+    <p>Sign in to continue to RVM ERP.</p>
+    <form id="loginForm">
+      <label for="email">Email/CRN <span style="color:red">*</span></label>
+      <input type="text" id="email" placeholder="Enter Email/CRN" required>
+      <label for="password">Password <span style="color:red">*</span></label>
+      <input type="password" id="password" placeholder="Enter password" required>
+      <div class="remember-me">
+        <input type="checkbox" id="remember">
+        <label for="remember">Remember me</label>
+      </div>
+      <button type="submit">Sign In</button>
+    </form>
+  </div>
+  <footer>© 2025 RVM HSM Design & Developed By Peramsons Software</footer>
+</div>
+
+<!-- MAIN WRAPPER (SIDEBAR + CONTENT) -->
+<div id="main-wrapper" class="hidden flex h-screen">
+  <!-- SIDEBAR -->
+  <aside class="w-64 bg-gray-900 text-white flex flex-col p-4">
+    <h1 class="text-xl font-bold mb-6 text-center">RVM</h1>
+    <ul class="space-y-2">
+      <li class="flex items-center p-3 rounded-lg hover:bg-gray-800 cursor-pointer"><i class="fas fa-bullhorn mr-3"></i>Campaigns</li>
+      <li class="mt-4 text-xs uppercase font-semibold text-gray-500">Vendor</li>
+      <li class="flex items-center p-3 rounded-lg hover:bg-gray-800 cursor-pointer"><i class="fas fa-user mr-3"></i>Vendor</li>
+      <li class="mt-4 text-xs uppercase font-semibold text-gray-500">MRD</li>
+      <li class="flex items-center p-3 rounded-lg hover:bg-gray-800 cursor-pointer"><i class="fas fa-file-medical mr-3"></i>MRD</li>
+      <li class="mt-4 text-xs uppercase font-semibold text-gray-500">Finance & Accounts</li>
+      <li class="flex items-center p-3 rounded-lg hover:bg-gray-800 cursor-pointer"><i class="fas fa-tachometer-alt mr-3"></i>Dashboard</li>
+      <li class="flex items-center p-3 rounded-lg hover:bg-gray-800 cursor-pointer"><i class="fas fa-file-invoice mr-3"></i>Invoices</li>
+      <li class="mt-4 text-xs uppercase font-semibold text-gray-500">Help Desk</li>
+      <li class="flex items-center p-3 rounded-lg hover:bg-gray-800 cursor-pointer"><i class="fas fa-calendar-check mr-3"></i>Appointments</li>
+      <li class="flex items-center p-3 rounded-lg hover:bg-gray-800 cursor-pointer"><i class="fas fa-tasks mr-3"></i>Follow Up's</li>
+      <li class="flex items-center p-3 rounded-lg hover:bg-gray-800 cursor-pointer"><i class="fas fa-headset mr-3"></i>Service Desk</li>
+      <li class="mt-4 text-xs uppercase font-semibold text-gray-500">Settings</li>
+      <li id="settingsBtn" class="flex items-center p-3 rounded-lg hover:bg-gray-800 cursor-pointer">
+        <i class="fas fa-cog mr-3"></i> General Settings
+      </li>
+      <div class="mt-auto p-4 text-sm">
+      <p>V.1.10-PULSE</p>
+    </div>
+  </aside>
+    </ul>
+  </aside>
+
+  <!-- Main Content -->
+  <div class="main-content flex-1 flex flex-col">
+    <!-- Header -->
+    <header class="navbar flex items-center justify-between p-3 bg-white shadow-sm sticky top-0 z-50">
+      <!-- Left side -->
+      <div class="navbar-left flex items-center space-x-3">
+        <i class="fas fa-bars cursor-pointer text-gray-600 text-xl"></i>
+        <div class="search-box relative">
+          <input id="globalSearch" type="text" placeholder="Search..." class="pl-8 pr-3 py-1 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"/>
+          <i class="fas fa-search absolute left-2 top-1/2 -translate-y-1/2 text-gray-400"></i>
+        </div>
+      </div>
+
+      <!-- Right side -->
+      <div class="navbar-right flex items-center space-x-4">
+        <div class="icon-btn cursor-pointer p-2 rounded hover:bg-gray-100" onclick="toggleFullscreen()">
+          <i class="fas fa-expand text-gray-600"></i>
+        </div>
+        <div class="icon-btn cursor-pointer p-2 rounded hover:bg-gray-100" onclick="toggleDarkMode()">
+          <i class="fas fa-moon text-gray-600"></i>
+        </div>
+        <div class="icon-btn relative cursor-pointer p-2 rounded hover:bg-gray-100" onclick="alert('You have 3 notifications!')">
+          <i class="fas fa-bell text-gray-600"></i>
+          <span class="badge absolute top-0 right-0 inline-block w-2 h-2 bg-red-500 rounded-full"></span>
+        </div>
+        <div class="profile-dropdown">
+          <div class="profile flex items-center space-x-2 cursor-pointer" onclick="toggleProfileDropdown()">
+            <img src="RVM.png" alt="RVM Logo" class="rounded-full w-10 h-10"/>
+            <div class="profile-text text-sm">
+              <strong>R.V.M Hospitals</strong>
+              <span class="block text-gray-500 text-xs">Help Desk</span>
+            </div>
+            <i class="fas fa-chevron-down text-xs ml-1"></i>
+          </div>
+          <div id="profileDropdown" class="dropdown-content">
+            <a href="#" onclick="alert('Profile settings clicked!')"><i class="fas fa-user-cog mr-2"></i> Profile Settings</a>
+            <a href="#" onclick="logout()"><i class="fas fa-sign-out-alt mr-2"></i> Logout</a>
+          </div>
+        </div>
+      </div>
+    </header>
+    <hr>
+    <header class="bg-white shadow-sm h-11">
+      <!-- Main content area -->
+      <div class="p-3 flex-grow overflow-auto">
+        <div class="flex justify-between items-center mb-6">
+          <h2 class="font-bold text-gray-800">SERVICE DESK</h2>
+          <div class="text-sm text-black">
+            <span id="breadcrumbDashboard" class="cursor-pointer text-blue-600 hover:underline">Dashboard</span> >
+            <span id="breadcrumbSettings" class="cursor-pointer text-blue-600 hover:underline">Settings</span> >
+            <span class="font-semibold text-gray-600">Help Desk</span>
+          </div>
+        </div>
+      </div>
+    </header>
+    <br>
+
+    <!-- DASHBOARD PLACEHOLDER -->
+    <div id="dashboard-page" class="hidden p-6">
+      <h2 class="text-2xl font-bold mb-6">Help Desk Dashboard</h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+        <div class="dashboard-card">
+          <i class="fas fa-ticket-alt text-blue-500"></i>
+          <h3 class="text-lg font-semibold">Total Tickets</h3>
+          <p class="text-3xl font-bold">245</p>
+        </div>
+        <div class="dashboard-card">
+          <i class="fas fa-clock text-yellow-500"></i>
+          <h3 class="text-lg font-semibold">Pending</h3>
+          <p class="text-3xl font-bold">42</p>
+        </div>
+        <div class="dashboard-card">
+          <i class="fas fa-check-circle text-green-500"></i>
+          <h3 class="text-lg font-semibold">Resolved</h3>
+          <p class="text-3xl font-bold">183</p>
+        </div>
+        <div class="dashboard-card">
+          <i class="fas fa-exclamation-circle text-red-500"></i>
+          <h3 class="text-lg font-semibold">Urgent</h3>
+          <p class="text-3xl font-bold">20</p>
+        </div>
+      </div>
+      
+      <div class="bg-white p-6 rounded-lg shadow mb-6">
+        <h3 class="text-xl font-semibold mb-4">Recent Tickets</h3>
+        <div class="space-y-4">
+          <div class="flex items-center justify-between border-b pb-3">
+            <div class="flex items-center">
+              <div class="bg-blue-100 p-2 rounded-full mr-3">
+                <i class="fas fa-ticket-alt text-blue-500"></i>
+              </div>
+              <div>
+                <p class="font-medium">New ticket created</p>
+                <p class="text-sm text-gray-500">Medicine Delay issue from Raja Shaker</p>
+              </div>
+            </div>
+            <span class="text-sm text-gray-500">2 hours ago</span>
+          </div>
+          <div class="flex items-center justify-between border-b pb-3">
+            <div class="flex items-center">
+              <div class="bg-green-100 p-2 rounded-full mr-3">
+                <i class="fas fa-check-circle text-green-500"></i>
+              </div>
+              <div>
+                <p class="font-medium">Ticket resolved</p>
+                <p class="text-sm text-gray-500">Food quality complaint from John Smith</p>
+              </div>
+            </div>
+            <span class="text-sm text-gray-500">5 hours ago</span>
+          </div>
+          <div class="flex items-center justify-between">
+            <div class="flex items-center">
+              <div class="bg-yellow-100 p-2 rounded-full mr-3">
+                <i class="fas fa-exclamation-circle text-yellow-500"></i>
+              </div>
+              <div>
+                <p class="font-medium">Ticket escalated</p>
+                <p class="text-sm text-gray-500">Staff behavior complaint from Sarah Johnson</p>
+              </div>
+            </div>
+            <span class="text-sm text-gray-500">Yesterday</span>
+          </div>
+          <footer class="bg-white p-4 text-xs text-gray-500 text-center">
+              © 2025 R.V.M Hospitals | Developed by Peramsons Software
+            </footer>
+        </div>
+      </div>
+    </div>
+
+    <!-- SETTINGS PAGE -->
+    <div id="settings-page" class="hidden p-6">
+      <h3 class="text-xl font-semibold mb-6">Help Desk Dashboard</h3>
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+        <div id="grievanceBtn" class="help-card">
+          <i class="fas fa-headset"></i>
+          <p>Grievances</p>
+        </div>
+        <div class="help-card">
+          <i class="fas fa-tasks"></i>
+          <p>Follow-ups</p>
+        </div>
+        <div class="help-card">
+          <i class="fas fa-calendar-check"></i>
+          <p>Appointments</p>
+        </div>
+        <div class="help-card">
+          <i class="fas fa-chart-bar"></i>
+          <p>Reports</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- GRIEVANCE MODULE PAGE -->
+    <div id="grievance-page" class="hidden flex flex-col flex-1">
+      <!-- Actions -->
+      <div class="p-4 flex flex-col md:flex-row justify-between items-center gap-4">
+        <div class="flex gap-2">
+          <button id="createGrievanceBtn" class="bg-blue-900 text-white px-3 py-2 rounded">Create Grievance</button>
+          <button id="importBtn" class="bg-green-600 text-white px-3 py-2 rounded">Import</button>
+          <button id="exportBtn" class="bg-blue-600 text-white px-3 py-2 rounded">Export</button>
+        </div>
+        <input type="text" id="searchInput" placeholder="Search..." class="border p-2 rounded w-full md:w-64"/>
+        <input type="file" id="importFile" class="hidden"/>
+      </div>
+
+      <!-- Table -->
+      <div class="table-scroll bg-white p-4 rounded shadow m-4 flex-1">
+        <table id="grievanceTable" class="min-w-full border border-gray-200 rounded">
+          <thead>
+            <tr class="bg-blue-900 text-white">
+              <th class="py-2 px-3">S.No</th>
+              <th class="py-2 px-3">Grievance Title</th>
+              <th class="py-2 px-3">Category</th>
+              <th class="py-2 px-3">Type</th>
+              <th class="py-2 px-3">Raised By / Against</th>
+              <th class="py-2 px-3">Date</th>
+              <th class="py-2 px-3">Status</th>
+              <th class="py-2 px-3">Actions</th>
+            </tr>
+          </thead>
+          <tbody id="grievanceBody">
+            <!-- Table rows will be populated by JavaScript -->
+          </tbody>
+        </table>
+      </div>
+      
+      <!-- Pagination -->
+      <div class="flex justify-center mt-4 space-x-2" id="paginationContainer">
+        <button id="prevPage" class="bg-gray-300 px-3 py-1 rounded hover:bg-gray-400">Previous</button>
+        <span id="pageNumbers" class="flex space-x-1"></span>
+        <button id="nextPage" class="bg-gray-300 px-3 py-1 rounded hover:bg-gray-400">Next</button>
+      </div>
+
+      <!-- Footer -->
+      <footer class="bg-white p-4 text-xs text-gray-500 text-center">
+        © 2025 R.V.M Hospitals | Developed by Peramsons Software
+      </footer>
+    </div>
+  </div>
+</div>
+
+<!-- CREATE GRIEVANCE MODAL -->
+<div id="new-grievance-modal" class="fixed inset-0 bg-gray-600 bg-opacity-50 hidden flex items-center justify-center p-4 z-50">
+  <div class="modal-content bg-white rounded-lg shadow-xl overflow-hidden animate-fade-in-down w-full max-w-2xl">
+    <div class="flex items-center justify-between p-4 bg-[#1e3a8a] text-white">
+      <h3 class="text-lg font-semibold">Create Grievance</h3>
+      <button id="close-modal-btn" class="text-white text-2xl focus:outline-none hover:text-gray-200">&times;</button>
+    </div>
+    <form id="grievanceForm" class="p-6 grid grid-cols-2 gap-4">
+      <div>
+        <label class="block text-sm font-medium">Grievance Title <span class="text-red-500">*</span></label>
+        <input type="text" id="modalGrievanceTitle" class="w-full border p-2 rounded" required>
+      </div>
+      <div>
+        <label class="block text-sm font-medium">Category <span class="text-red-500">*</span></label>
+        <select id="modalGrievanceCategory" class="w-full border p-2 rounded" required>
+          <option value="">Select category</option>
+          <option>Food Quality</option>
+          <option>Staff Behavior</option>
+          <option>Medicine Delay</option>
+          <option>Facilities</option>
+          <option>Appointment Issues</option>
+          <option>Billing Issues</option>
+        </select>
+      </div>
+      <div>
+        <label class="block text-sm font-medium">Type <span class="text-red-500">*</span></label>
+        <select id="modalGrievanceType" class="w-full border p-2 rounded" required>
+          <option value="">Select Type</option>
+          <option>Patient</option>
+          <option>Staff</option>
+          <option>Visitor</option>
+        </select>
+      </div>
+      <div>
+        <label class="block text-sm font-medium">Raised By <span class="text-red-500">*</span></label>
+        <input type="text" id="modalRaisedBy" class="w-full border p-2 rounded" required>
+      </div>
+      <div>
+        <label class="block text-sm font-medium">Against Employee</label>
+        <select id="modalAgainstEmployee" class="w-full border p-2 rounded">
+          <option value="">Select Employee</option>
+          <option>Dr. John Smith</option>
+          <option>Nurse Sarah Johnson</option>
+          <option>Staff Priya Kumar</option>
+          <option>Admin Raja Shaker</option>
+        </select>
+      </div>
+      <div>
+        <label class="block text-sm font-medium">Priority <span class="text-red-500">*</span></label>
+        <select id="modalPriority" class="w-full border p-2 rounded" required>
+          <option value="">Select Priority</option>
+          <option>Low</option>
+          <option>Medium</option>
+          <option>High</option>
+          <option>Critical</option>
+        </select>
+      </div>
+      <div>
+        <label class="block text-sm font-medium">Date <span class="text-red-500">*</span></label>
+        <input type="date" id="modalGrievanceDate" class="w-full border p-2 rounded" required>
+      </div>
+      <div>
+        <label class="block text-sm font-medium">Status <span class="text-red-500">*</span></label>
+        <select id="modalStatus" class="w-full border p-2 rounded" required>
+          <option value="">Select Status</option>
+          <option>Open</option>
+          <option>In Progress</option>
+          <option>Resolved</option>
+          <option>Closed</option>
+        </select>
+      </div>
+      <div class="col-span-2">
+        <label class="block text-sm font-medium">Description <span class="text-red-500">*</span></label>
+        <textarea id="modalDescription" class="w-full border p-2 rounded" rows="3" required></textarea>
+      </div>
+      <div class="col-span-2 flex justify-end space-x-2">
+        <button type="submit" class="bg-blue-900 text-white px-4 py-2 rounded">Create</button>
+        <button type="button" id="cancelGrievanceModal" class="bg-gray-400 text-white px-4 py-2 rounded">Cancel</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script>
+  // ===================  DATA STORAGE ===================
+  // Function to save data to localStorage
+  function saveGrievanceData(data) {
+    localStorage.setItem('grievanceData', JSON.stringify(data));
+  }
+
+  // Function to load data from localStorage
+  function loadGrievanceData() {
+    const data = localStorage.getItem('grievanceData');
+    return data ? JSON.parse(data) : [];
+  }
+
+  // Initialize grievance data
+  let grievanceData = loadGrievanceData();
+
+  // If no data exists, add sample data
+  if (grievanceData.length === 0) {
+    grievanceData = [
+      { id: 1, title: "Medicine Delay", category: "Medicine Delay", type: "Patient", raisedBy: "Raja Shaker", against: "Dr. John Smith", date: "2023-05-20", status: "Open", priority: "High", description: "Medicine not delivered on time" },
+      { id: 2, title: "Food Quality Issue", category: "Food Quality", type: "Patient", raisedBy: "John Smith", against: "Staff Priya Kumar", date: "2023-05-19", status: "In Progress", priority: "Medium", description: "Food was cold and not fresh" },
+      { id: 3, title: "Staff Behavior", category: "Staff Behavior", type: "Visitor", raisedBy: "Sarah Johnson", against: "Nurse Sarah Johnson", date: "2023-05-18", status: "Resolved", priority: "High", description: "Rude behavior from nursing staff" },
+      { id: 4, title: "Cleanliness Problem", category: "Facilities", type: "Patient", raisedBy: "Priya Kumar", against: "Admin Raja Shaker", date: "2023-05-17", status: "Closed", priority: "Low", description: "Washroom was not clean" }
+    ];
+    saveGrievanceData(grievanceData);
+  }
+
+  // ===================  LOGIN ===================
+  document.getElementById("loginForm").addEventListener("submit", (e) => {
+    e.preventDefault();
+    document.getElementById("login-page").classList.add("hidden");
+    document.getElementById("main-wrapper").classList.remove("hidden");
+    document.getElementById("dashboard-page").classList.remove("hidden");
+  });
+
+  // ===================  NAVIGATION ===================
+  const dashboardPage = document.getElementById("dashboard-page");
+  const settingsPage = document.getElementById("settings-page");
+  const grievancePage = document.getElementById("grievance-page");
+
+  document.getElementById("settingsBtn").onclick = () => {
+    dashboardPage.classList.add("hidden");
+    grievancePage.classList.add("hidden");
+    settingsPage.classList.remove("hidden");
+  };
+
+  document.getElementById("grievanceBtn").onclick = () => {
+    settingsPage.classList.add("hidden");
+    grievancePage.classList.remove("hidden");
+    renderTable(); // Render table when navigating to grievance page
+  };
+
+  document.getElementById("breadcrumbDashboard").onclick = () => {
+    settingsPage.classList.add("hidden");
+    grievancePage.classList.add("hidden");
+    dashboardPage.classList.remove("hidden");
+  };
+
+  document.getElementById("breadcrumbSettings").onclick = () => {
+    dashboardPage.classList.add("hidden");
+    grievancePage.classList.add("hidden");
+    settingsPage.classList.remove("hidden");
+  };
+
+  // ===================  GRIEVANCE MODAL ===================
+  const grievanceModal = document.getElementById("new-grievance-modal");
+  const grievanceForm = document.getElementById("grievanceForm");
+  const grievanceBody = document.getElementById("grievanceBody");
+  const closeModalBtn = document.getElementById("close-modal-btn");
+  const cancelGrievanceBtn = document.getElementById("cancelGrievanceModal");
+
+  // Initialize editingRow variable
+  let editingRow = null;
+
+  document.getElementById("createGrievanceBtn").onclick = () => {
+    editingRow = null;
+    grievanceForm.reset();
+    grievanceModal.classList.remove("hidden");
+  };
+  
+  closeModalBtn.onclick = () => {
+    grievanceModal.classList.add("hidden");
+    grievanceForm.reset();
+  };
+  
+  cancelGrievanceBtn.onclick = () => {
+    grievanceModal.classList.add("hidden");
+    grievanceForm.reset();
+  };
+  
+  grievanceModal.addEventListener("click", e => {
+    if(e.target === grievanceModal) grievanceModal.classList.add("hidden");
+  });
+
+  // ===================  PAGINATION ===================
+  let currentPage = 1;
+  const rowsPerPage = 10; // 10 rows per page
+
+  function renderTable() {
+    const searchQuery = document.getElementById("searchInput").value.toLowerCase();
+    
+    // Filter data based on search
+    const filteredData = grievanceData.filter(item => {
+      const searchString = Object.values(item).join(" ").toLowerCase();
+      return searchString.includes(searchQuery);
+    });
+
+    const totalPages = Math.ceil(filteredData.length / rowsPerPage);
+    if (currentPage > totalPages) currentPage = totalPages || 1;
+
+    // Clear table body
+    grievanceBody.innerHTML = "";
+
+    // Calculate start and end index for current page
+    const start = (currentPage - 1) * rowsPerPage;
+    const end = start + rowsPerPage;
+    const currentPageData = filteredData.slice(start, end);
+
+    // Populate table with current page data
+    currentPageData.forEach(item => {
+      const tr = document.createElement("tr");
+      tr.className = "border-b border-gray-200";
+      tr.innerHTML = `
+        <td class="py-3 px-4 text-center">${item.id}</td>
+        <td class="py-3 px-4 text-center">${item.title}</td>
+        <td class="py-3 px-4 text-center">${item.category}</td>
+        <td class="py-3 px-4 text-center">${item.type}</td>
+        <td class="py-3 px-4 text-center">${item.raisedBy}${item.against ? ' / ' + item.against : ''}</td>
+        <td class="py-3 px-4 text-center">${item.date}</td>
+        <td class="py-3 px-4 text-center">
+          <span class="${getStatusClass(item.status)} px-2 py-1 rounded-full text-xs font-semibold">${item.status}</span>
+        </td>
+        <td class="py-3 px-4 text-center flex justify-center space-x-2">
+          <button class="bg-blue-900 text-white p-2 rounded-lg hover:bg-blue-800 transition-colors view-btn" data-id="${item.id}"><i class="fas fa-eye"></i></button>
+          <button class="bg-blue-500 text-white p-2 rounded-lg hover:bg-blue-400 transition-colors edit-btn" data-id="${item.id}"><i class="fas fa-pencil-alt"></i></button>
+          <button class="bg-red-500 text-white p-2 rounded-lg hover:bg-red-400 transition-colors delete-btn" data-id="${item.id}"><i class="fas fa-trash"></i></button>
+        </td>`;
+      grievanceBody.appendChild(tr);
+    });
+
+    // Render page numbers
+    const pageNumbers = document.getElementById("pageNumbers");
+    pageNumbers.innerHTML = "";
+    for(let i = 1; i <= totalPages; i++) {
+      const btn = document.createElement("button");
+      btn.innerText = i;
+      btn.className = `pagination-btn ${i === currentPage ? 'bg-blue-900 text-white' : 'bg-gray-300 hover:bg-gray-400'}`;
+      btn.onclick = () => { 
+        currentPage = i; 
+        renderTable(); 
+      };
+      pageNumbers.appendChild(btn);
+    }
+  }
+
+  document.getElementById("prevPage").onclick = () => { 
+    if(currentPage > 1) { 
+      currentPage--; 
+      renderTable(); 
+    } 
+  };
+  
+  document.getElementById("nextPage").onclick = () => {
+    const searchQuery = document.getElementById("searchInput").value.toLowerCase();
+    const filteredData = grievanceData.filter(item => {
+      const searchString = Object.values(item).join(" ").toLowerCase();
+      return searchString.includes(searchQuery);
+    });
+    const totalPages = Math.ceil(filteredData.length / rowsPerPage);
+    
+    if(currentPage < totalPages) { 
+      currentPage++; 
+      renderTable(); 
+    }
+  };
+
+  // ===================  SEARCH FUNCTIONALITY ===================
+  document.getElementById("searchInput").addEventListener("input", () => {
+    currentPage = 1;
+    renderTable();
+  });
+
+  // ===================  HELPER FUNCTIONS ===================
+  function getStatusClass(status) {
+    if(status === "Open") return "bg-blue-100 text-blue-800";
+    if(status === "In Progress") return "bg-yellow-100 text-yellow-800";
+    if(status === "Resolved") return "bg-green-100 text-green-800";
+    if(status === "Closed") return "bg-gray-100 text-gray-800";
+    return "bg-gray-100 text-gray-800";
+  }
+
+  function getNextId() {
+    return grievanceData.length > 0 ? Math.max(...grievanceData.map(item => item.id)) + 1 : 1;
+  }
+
+  // ===================  ADD / EDIT ROW ===================
+  grievanceForm.onsubmit = e => {
+    e.preventDefault();
+    const formData = {
+      id: editingRow ? editingRow.id : getNextId(),
+      title: document.getElementById("modalGrievanceTitle").value,
+      category: document.getElementById("modalGrievanceCategory").value,
+      type: document.getElementById("modalGrievanceType").value,
+      raisedBy: document.getElementById("modalRaisedBy").value,
+      against: document.getElementById("modalAgainstEmployee").value,
+      priority: document.getElementById("modalPriority").value,
+      date: document.getElementById("modalGrievanceDate").value,
+      status: document.getElementById("modalStatus").value,
+      description: document.getElementById("modalDescription").value
+    };
+
+    if(editingRow) {
+      // Update existing item
+      const index = grievanceData.findIndex(item => item.id === editingRow.id);
+      if (index !== -1) {
+        grievanceData[index] = formData;
+      }
+    } else {
+      // Add new item
+      grievanceData.push(formData);
+    }
+
+    // Save data and refresh table
+    saveGrievanceData(grievanceData);
+    grievanceModal.classList.add("hidden");
+    grievanceForm.reset();
+    renderTable();
+  };
+
+  // ===================  DELEGATED BUTTONS ===================
+  grievanceBody.addEventListener("click", e => {
+    const btn = e.target.closest("button");
+    if (!btn) return;
+    
+    const id = parseInt(btn.getAttribute("data-id"));
+    const item = grievanceData.find(item => item.id === id);
+    
+    if(!item) return;
+
+    // DELETE
+    if(btn.classList.contains("delete-btn")) { 
+      if(confirm("Are you sure you want to delete this grievance?")) {
+        grievanceData = grievanceData.filter(i => i.id !== id);
+        saveGrievanceData(grievanceData);
+        renderTable();
+      }
+    }
+
+    // EDIT
+    if(btn.classList.contains("edit-btn")) {
+      editingRow = item;
+      document.getElementById("modalGrievanceTitle").value = item.title;
+      document.getElementById("modalGrievanceCategory").value = item.category;
+      document.getElementById("modalGrievanceType").value = item.type;
+      document.getElementById("modalRaisedBy").value = item.raisedBy;
+      document.getElementById("modalAgainstEmployee").value = item.against || "";
+      document.getElementById("modalPriority").value = item.priority || "";
+      document.getElementById("modalGrievanceDate").value = item.date;
+      document.getElementById("modalStatus").value = item.status;
+      document.getElementById("modalDescription").value = item.description || "";
+      grievanceModal.classList.remove("hidden");
+    }
+
+    // VIEW
+    if(btn.classList.contains("view-btn")) {
+      alert("Grievance Details:\n\n" + 
+            "ID: " + item.id + "\n" +
+            "Title: " + item.title + "\n" +
+            "Category: " + item.category + "\n" +
+            "Type: " + item.type + "\n" +
+            "Raised By: " + item.raisedBy + "\n" +
+            (item.against ? "Against: " + item.against + "\n" : "") +
+            "Priority: " + (item.priority || "Not specified") + "\n" +
+            "Date: " + item.date + "\n" +
+            "Status: " + item.status + "\n" +
+            "Description: " + (item.description || "No description"));
+    }
+  });
+
+  // ===================  CSV EXPORT ===================
+  document.getElementById("exportBtn").addEventListener("click", () => {
+    let csv = "ID,Title,Category,Type,Raised By,Against,Priority,Date,Status,Description\n";
+    grievanceData.forEach(item => {
+      csv += `${item.id},"${item.title}","${item.category}","${item.type}","${item.raisedBy}","${item.against || ''}","${item.priority || ''}","${item.date}","${item.status}","${item.description || ''}"\n`;
+    });
+    
+    const blob = new Blob([csv], { type: "text/csv" });
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(blob);
+    a.download = "grievances.csv";
+    a.click();
+  });
+
+  // ===================  CSV IMPORT ===================
+  document.getElementById("importBtn").addEventListener("click", () => {
+    document.getElementById("importFile").click();
+  });
+  
+  document.getElementById("importFile").addEventListener("change", e => {
+    const file = e.target.files[0];
+    if(!file) return;
+    
+    const reader = new FileReader();
+    reader.onload = evt => {
+      const lines = evt.target.result.split("\n");
+      const newData = [];
+      
+      lines.forEach((line, index) => {
+        if(!line.trim() || index === 0) return; // Skip header and empty lines
+        
+        const values = line.split(",").map(v => v.replace(/"/g, "").trim());
+        if(values.length >= 9) {
+          newData.push({
+            id: parseInt(values[0]) || getNextId(),
+            title: values[1],
+            category: values[2],
+            type: values[3],
+            raisedBy: values[4],
+            against: values[5],
+            priority: values[6],
+            date: values[7],
+            status: values[8],
+            description: values[9] || ""
+          });
+        }
+      });
+      
+      // Add new data to existing data
+      grievanceData = [...grievanceData, ...newData];
+      saveGrievanceData(grievanceData);
+      renderTable();
+      alert("Import completed successfully!");
+    };
+    reader.readAsText(file);
+  });
+
+  // =================== PROFILE DROPDOWN ===================
+  function toggleProfileDropdown() {
+    document.getElementById("profileDropdown").classList.toggle("show");
+  }
+
+  // Close the dropdown if the user clicks outside of it
+  window.onclick = function(event) {
+    if (!event.target.matches('.profile')) {
+      const dropdown = document.getElementById("profileDropdown");
+      if (dropdown.classList.contains('show')) {
+        dropdown.classList.remove('show');
+      }
+    }
+  }
+
+  // ===================  LOGOUT FUNCTION ===================
+  function logout() {
+    // Hide main wrapper and show login page
+    document.getElementById("main-wrapper").classList.add("hidden");
+    document.getElementById("login-page").classList.remove("hidden");
+    
+    // Close profile dropdown
+    document.getElementById("profileDropdown").classList.remove("show");
+    
+    // Clear login form
+    document.getElementById("loginForm").reset();
+  }
+
+  // ===================  INITIAL RENDER ===================
+  // Initial render will happen when the grievance page is shown
+
+  // ===================  DASHBOARD GLOBAL SEARCH ===================
+  const globalSearchInput = document.getElementById('globalSearch');
+  globalSearchInput.addEventListener('input', () => {
+    const query = globalSearchInput.value.toLowerCase();
+    if (query.length > 2) {
+      alert("Search functionality would filter dashboard content for: " + query);
+      // In a real implementation, you would filter dashboard cards here
+    }
+  });
+
+  // ===================  FULLscreen TOGGLE ===================
+  function toggleFullscreen() {
+    if (!document.fullscreenElement) {
+      document.documentElement.requestFullscreen();
+    } else if (document.exitFullscreen) {
+      document.exitFullscreen();
+    }
+  }
+
+  // ===================  DARK MODE TOGGLE ===================
+  function toggleDarkMode() {
+    document.body.classList.toggle('dark');
+  }
+</script>
+</body>
+</html>
