@@ -1,0 +1,433 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Bed Type List - Mock</title>
+
+    <!-- Bootstrap 5 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+
+    <style>
+        :root {
+            --sidebar-bg: #374073;
+            --sidebar-text: #dbe3f0;
+            --accent: #2c3e87;
+            --card-bg: #ffffff;
+            --muted: #7b7f88;
+            --green: #10b981;
+            --danger: #f14f4f;
+        }
+
+        html,
+        body {
+            height: 100%;
+        }
+
+        body {
+            background: #f3f2f7;
+            font-family: "Segoe UI", Roboto, "Helvetica Neue", Arial;
+            margin: 0;
+            padding: 0;
+        }
+
+        .topbar {
+            height: 64px;
+            background: #fff;
+            border-bottom: 1px solid #ececec;
+            display: flex;
+            align-items: center;
+            padding: 0 24px;
+            gap: 16px;
+        }
+
+        .topbar .search-input {
+            max-width: 520px;
+            width: 100%;
+        }
+
+        .topbar .icons {
+            margin-left: auto;
+            display: flex;
+            gap: 14px;
+            align-items: center;
+        }
+
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 260px;
+            background: var(--sidebar-bg);
+            color: var(--sidebar-text);
+            padding: 22px 18px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .sidebar .logo {
+            font-weight: 700;
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+
+        .sidebar .nav-wrap {
+            overflow: auto;
+            margin-top: 8px;
+        }
+
+        .sidebar .nav-item {
+            color: rgba(255, 255, 255, 0.9);
+            padding: 10px 6px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            border-radius: 6px;
+        }
+
+        .sidebar .nav-item:hover {
+            background: rgba(255, 255, 255, 0.03);
+            cursor: pointer;
+        }
+
+        .main {
+            margin-left: 260px;
+            padding: 24px;
+            min-height: 100vh;
+        }
+
+        .breadcrumb-line {
+            color: var(--muted);
+            font-size: 14px;
+        }
+
+        .card-custom {
+            background: var(--card-bg);
+            border-radius: 8px;
+            border: 1px solid #ecebf2;
+        }
+
+        .card-header {
+            padding: 18px 22px;
+            border-bottom: 1px solid #f1f1f6;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .table thead th {
+            background: var(--accent);
+            color: #fff;
+            font-weight: 600;
+            vertical-align: middle;
+        }
+
+        .status-pill {
+            padding: 6px 10px;
+            border-radius: 14px;
+            font-size: 13px;
+            color: #fff;
+            display: inline-block;
+        }
+
+        .status-active {
+            background: var(--green);
+        }
+
+        .btn-icon {
+            width: 38px;
+            height: 36px;
+            padding: 6px;
+            border-radius: 6px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .pagination-wrap {
+            display: flex;
+            justify-content: center;
+            padding: 18px;
+        }
+
+        @media (max-width: 900px) {
+            .sidebar {
+                width: 72px;
+            }
+
+            .main {
+                margin-left: 72px;
+                padding: 12px;
+            }
+
+            .topbar .search-input {
+                display: none;
+            }
+
+            .sidebar .nav-item .label {
+                display: none;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <div class="logo">RVM</div>
+
+        <div style="margin-top:18px;color:#c8d0e8;font-size:12px;">Finance & Accounts</div>
+        <div class="nav-item"><i class="bi bi-bar-chart-line-fill"></i>
+            <div class="label">Dashboard</div>
+        </div>
+
+        <div style="margin-top:26px;color:#c8d0e8;font-size:12px;">Settings</div>
+        <div class="nav-item"><i class="bi bi-gear"></i>
+            <div class="label">General Settings</div>
+        </div>
+        <div style="margin-top:16px;color:#c8d0e8;font-size:13px;">V.1.10-PULSE</div>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <div class="main">
+
+        <!-- Topbar -->
+        <div class="topbar card-custom mb-3">
+            <div style="display:flex;align-items:center;gap:12px;">
+                <button class="btn btn-light btn-sm" id="menuToggle"><i class="bi bi-list"></i></button>
+                <div class="search-input"><input class="form-control form-control-sm" placeholder="Search..." /></div>
+            </div>
+            <div class="icons">
+                <div class="badge bg-primary"></div>
+                <i class="bi bi-arrows-fullscreen"></i>
+                <i class="bi bi-moon"></i>
+                <div class="position-relative">
+                    <i class="bi bi-bell"></i>
+                    <span
+                        class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"></span>
+                </div>
+                <div style="display:flex;align-items:center; gap:10px;">
+                    <img src="https://via.placeholder.com/36" style="border-radius:50%;" alt="avatar">
+                    <div style="font-size:13px;text-align:right;">
+                        <div style="font-weight:600;">R.V.M Hospitals</div>
+                        <div style="font-size:11px;color:var(--muted);">RVM15032501</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="mb-3">
+            <h5 style="margin:0;font-weight:700;">BED TYPE LIST</h5>
+            <div class="breadcrumb-line mt-2">Dashboard &gt; Settings &gt; Bed Type List</div>
+        </div>
+
+        <!-- Card -->
+        <div class="card card-custom">
+            <div class="card-header">
+                <div style="display:flex;gap:10px;align-items:center;">
+                    <!-- Button to open modal -->
+                    <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#createBedTypeModal">
+                        <i class="bi bi-plus-square me-1"></i> Create Bed Type
+                    </button>
+                    <button class="btn btn-success btn-sm" id="importBtn"><i class="bi bi-upload me-1"></i>
+                        Import</button>
+                    <button class="btn btn-outline-primary btn-sm" id="exportBtn"><i
+                            class="bi bi-file-earmark-arrow-down me-1"></i> Export</button>
+                </div>
+                <div><input id="searchTable" class="form-control form-control-sm" placeholder="Search by bed type"
+                        style="width:260px;"></div>
+            </div>
+
+            <div class="card-body p-0">
+                <div class="table-responsive">
+                    <table class="table mb-0 align-middle">
+                        <thead>
+                            <tr>
+                                <th style="width:70px;">S.No</th>
+                                <th>Bed Type</th>
+                                <th style="width:180px;">Created Date</th>
+                                <th style="width:120px;">Status</th>
+                                <th style="width:120px;">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="bedTableBody">
+                            <tr>
+                                <td>1</td>
+                                <td>ICU (Intensive Care Unit) Beds</td>
+                                <td>24 Apr, 2025</td>
+                                <td><span class="status-pill status-active">Active</span></td>
+                                <td>
+                                    <button class="btn btn-icon btn-sm btn-primary me-1"><i
+                                            class="bi bi-pencil-fill text-white"></i></button>
+                                    <button class="btn btn-icon btn-sm btn-danger"><i
+                                            class="bi bi-trash-fill text-white"></i></button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="pagination-wrap">
+                    <nav>
+                        <ul class="pagination pagination-sm mb-0">
+                            <li class="page-item disabled"><a class="page-link">Previous</a></li>
+                            <li class="page-item active"><a class="page-link">1</a></li>
+                            <li class="page-item"><a class="page-link">Next</a></li>
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+        </div>
+
+        <footer style="color:var(--muted); font-size:13px; margin-top:18px;">
+            R.V.M Hospitals © Peramsons Software. All Rights Reserved.
+            <span style="float:right;">Design & Develop by Peramsons Software</span>
+        </footer>
+
+    </div>
+
+    <!-- Create Bed Type Modal -->
+    <div class="modal fade" id="createBedTypeModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <form id="bedTypeForm">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Create New Bed Type</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <label class="form-label">Bed Type <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" id="bedTypeInput" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Short Description</label>
+                            <textarea class="form-control" id="bedDescriptionInput" rows="2"></textarea>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Create</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS + Script -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Toggle sidebar width
+        document.getElementById('menuToggle').addEventListener('click', () => {
+            const sb = document.querySelector('.sidebar');
+            const main = document.querySelector('.main');
+            if (sb.style.width === '72px') {
+                sb.style.width = '260px'; main.style.marginLeft = '260px';
+            } else {
+                sb.style.width = '72px'; main.style.marginLeft = '72px';
+            }
+        });
+
+        const searchInput = document.getElementById('searchTable');
+        const tableBody = document.getElementById('bedTableBody');
+
+        // Search filter
+        searchInput.addEventListener('input', () => {
+            const q = searchInput.value.trim().toLowerCase();
+            Array.from(tableBody.rows).forEach(row => {
+                const bedType = row.cells[1].textContent.toLowerCase();
+                row.style.display = bedType.indexOf(q) === -1 ? 'none' : '';
+            });
+        });
+
+        // Add new bed type row
+        document.getElementById('bedTypeForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+            const bedType = document.getElementById('bedTypeInput').value.trim();
+            if (!bedType) return;
+
+            const today = new Date();
+            const dateStr = today.toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' });
+
+            const rowCount = tableBody.rows.length + 1;
+            const newRow = tableBody.insertRow();
+            newRow.innerHTML = `
+        <td>${rowCount}</td>
+        <td>${bedType}</td>
+        <td>${dateStr}</td>
+        <td><span class="status-pill status-active">Active</span></td>
+        <td>
+          <button class="btn btn-icon btn-sm btn-primary me-1"><i class="bi bi-pencil-fill text-white"></i></button>
+          <button class="btn btn-icon btn-sm btn-danger"><i class="bi bi-trash-fill text-white"></i></button>
+        </td>
+      `;
+
+            e.target.reset();
+            const modal = bootstrap.Modal.getInstance(document.getElementById('createBedTypeModal'));
+            modal.hide();
+        });
+
+        // -------- Export to CSV --------
+        document.getElementById('exportBtn').addEventListener('click', () => {
+            let csv = 'S.No,Bed Type,Created Date,Status\n';
+            Array.from(tableBody.rows).forEach(row => {
+                const cols = Array.from(row.cells).map(td => td.innerText.replace(/\n/g, ' '));
+                csv += cols.slice(0, 4).join(',') + '\n';
+            });
+            const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'bed-types.csv';
+            a.click();
+            URL.revokeObjectURL(url);
+        });
+
+        // -------- Import from CSV --------
+        const fileInput = document.createElement('input');
+        fileInput.type = 'file';
+        fileInput.accept = '.csv';
+        fileInput.style.display = 'none';
+        document.body.appendChild(fileInput);
+
+        document.getElementById('importBtn').addEventListener('click', () => fileInput.click());
+
+        fileInput.addEventListener('change', e => {
+            const file = e.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = evt => {
+                const lines = evt.target.result.split(/\r?\n/).filter(Boolean);
+                lines.forEach(line => {
+                    const [bedType, description] = line.split(',').map(s => s.trim());
+                    if (!bedType) return;
+
+                    const today = new Date();
+                    const dateStr = today.toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' });
+                    const rowCount = tableBody.rows.length + 1;
+
+                    const newRow = tableBody.insertRow();
+                    newRow.innerHTML = `
+            <td>${rowCount}</td>
+            <td>${bedType}${description ? ' - ' + description : ''}</td>
+            <td>${dateStr}</td>
+            <td><span class="status-pill status-active">Active</span></td>
+            <td>
+              <button class="btn btn-icon btn-sm btn-primary me-1"><i class="bi bi-pencil-fill text-white"></i></button>
+              <button class="btn btn-icon btn-sm btn-danger"><i class="bi bi-trash-fill text-white"></i></button>
+            </td>
+          `;
+                });
+                fileInput.value = '';
+            };
+            reader.readAsText(file);
+        });
+    </script>
+</body>
+
+</html>
